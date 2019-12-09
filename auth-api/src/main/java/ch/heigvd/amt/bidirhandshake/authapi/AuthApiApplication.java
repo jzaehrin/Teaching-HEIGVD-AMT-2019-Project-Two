@@ -1,7 +1,7 @@
 package ch.heigvd.amt.bidirhandshake.authapi;
 
-import ch.heigvd.amt.bidirhandshake.authapi.controller.dto.UserRepository;
-import ch.heigvd.amt.bidirhandshake.authapi.model.entities.User;
+import ch.heigvd.amt.bidirhandshake.authapi.repositories.UserRepository;
+import ch.heigvd.amt.bidirhandshake.authapi.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;

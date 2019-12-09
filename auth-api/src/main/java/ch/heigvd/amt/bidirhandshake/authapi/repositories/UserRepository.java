@@ -1,7 +1,7 @@
-package ch.heigvd.amt.bidirhandshake.authapi.controller.dto;
+package ch.heigvd.amt.bidirhandshake.authapi.repositories;
 import java.util.List;
 
-import ch.heigvd.amt.bidirhandshake.authapi.model.entities.User;
+import ch.heigvd.amt.bidirhandshake.authapi.entities.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<User, Long> {
