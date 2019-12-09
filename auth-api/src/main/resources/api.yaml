@@ -1,0 +1,179 @@
+openapi: 3.0.1
+info:
+  title: AMT Project Two - Auth API
+  description: Project Two of the course AMT 2019 to the HEIG-VD
+  termsOfService: https://github.com/jzaehrin/Teaching-HEIGVD-AMT-2019-Project-Two
+  contact:
+    email: jonathan.zaehringer@heig-vd.ch
+  license:
+    name: TBD
+  version: 1.0.0
+externalDocs:
+  description: Markdown report
+  url: https://github.com/jzaehrin/Teaching-HEIGVD-AMT-2019-Project-Two
+tags:
+- name: users
+  description: Operations about users
+- name: admin
+  description: Operations for admin users
+servers:
+  - url: http://localhost:3000/v1
+paths:
+  /users/login:
+    post:
+      tags:
+      - users
+      summary: Login to an existing User
+      operationId: login
+      requestBody:
+        description: User credential object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredential'
+        required: true
+      responses:
+        200:
+          description: Successfull login
+          headers:
+            Authorization:
+              schema:
+                $ref: '#/components/securitySchemes/BearerJWT'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Invalid email or password
+  /users/{id}/password:
+    post:
+      tags:
+      - users
+      security:
+        - BearerJWT: []
+      summary: Change user password
+      description: Permit to change this own password
+      operationId: changePassword
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: User identifiant number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordChanger'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Email already used
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /admin/users:
+    post:
+      tags:
+      - admin
+      - users
+      security:
+        - BearerJWT: []
+      summary: Create a new Users
+      description: Create a new Users if the user is an admin
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Email already used
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    UserCredential:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    PasswordChanger:
+      type: object
+      properties:
+        previousPassword:
+          type: string
+        password:
+          type: string
+        confirm_password:
+          type: string
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        confirm_password:
+          type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+  securitySchemes:
+    BearerJWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
