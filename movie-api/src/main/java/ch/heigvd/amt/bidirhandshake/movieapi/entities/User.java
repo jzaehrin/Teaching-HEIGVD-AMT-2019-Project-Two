@@ -29,19 +29,19 @@ public class User {
     private String lastname;
     private String email;
 
-    @ToString.Exclude
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "media_user",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "media_id"))
+    @WhereJoinTable(clause = "watched is not null")
     private List<Media> watchedMedias;
 
-    @ToString.Exclude
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "media_user",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "media_id"))
+    @WhereJoinTable(clause = "watched is null")
     private List<Media> toWatchMedias;
 }
