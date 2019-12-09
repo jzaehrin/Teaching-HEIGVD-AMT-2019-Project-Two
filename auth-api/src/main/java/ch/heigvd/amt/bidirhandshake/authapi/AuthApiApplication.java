@@ -1,7 +1,7 @@
 package ch.heigvd.amt.bidirhandshake.authapi;
 
 import ch.heigvd.amt.bidirhandshake.authapi.controller.dto.UserRepository;
-import ch.heigvd.amt.bidirhandshake.authapi.model.entities.Users;
+import ch.heigvd.amt.bidirhandshake.authapi.model.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -29,16 +29,16 @@ public class AuthApiApplication {
             // fetch all users
             log.info("Users found with findAll():");
             log.info("-------------------------------");
-            for (Users user : repository.findAll()) {
+            for (User user : repository.findAll()) {
                 log.info(user.toString());
             }
             log.info("");
 
             // fetch an individual user by role
-            List<Users> users = repository.findByRole(Users.Role.admin);
+            List<User> users = repository.findByRole(User.Role.admin);
             log.info("User found with findByRole('Admin'):");
             log.info("--------------------------------");
-            for (Users user : users) {
+            for (User user : users) {
                 log.info(user.toString());
             }
             log.info("");

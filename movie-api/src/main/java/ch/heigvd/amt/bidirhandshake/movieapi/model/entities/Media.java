@@ -1,4 +1,4 @@
-package ch.heigvd.amt.bidirhandshake.authapi.model.entities;
+package ch.heigvd.amt.bidirhandshake.movieapi.model.entities;
 
 import javax.persistence.*;
 
@@ -16,19 +16,17 @@ import java.sql.Timestamp;
 @ToString
 @EqualsAndHashCode
 @Entity
-public class Users {
+@Table(name = "medias")
+public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String username;
-    private String password;
-    private String email;
-    @Enumerated(EnumType.STRING)
-    private Role role;
-    private Timestamp memberSince;
+    private String title;
+    private Timestamp release;
+    private Integer duration;
+    private String mainGenre;
+    private Integer rating;
 
-    public enum Role {
-        admin,
-        user
-    }
+    //private Boolean inserted;
+    //private Boolean watched;
 }
