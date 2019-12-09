@@ -46,9 +46,8 @@ public class AuthApiApplication {
             // fetch users by last name
             log.info("User found with findByUsername('pete842'):");
             log.info("--------------------------------------------");
-            repository.findByUsername("pete842").forEach(bauer -> {
-                log.info(bauer.toString());
-            });
+            log.info(repository.findByUsername("pete842").toString());
+
 
             log.info("");
         };

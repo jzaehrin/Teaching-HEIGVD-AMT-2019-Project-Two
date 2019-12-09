@@ -1,7 +1,8 @@
 package ch.heigvd.amt.bidirhandshake.movieapi;
 
-import ch.heigvd.amt.bidirhandshake.movieapi.entities.Media;
+import ch.heigvd.amt.bidirhandshake.movieapi.entities.ToWatchMediaUser;
 import ch.heigvd.amt.bidirhandshake.movieapi.entities.User;
+import ch.heigvd.amt.bidirhandshake.movieapi.entities.WatchedMediaUser;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootApplication
 public class MovieApiApplication {
@@ -21,7 +21,9 @@ public class MovieApiApplication {
         SpringApplication.run(MovieApiApplication.class, args);
     }
 
+
     @Bean
+    @Transactional
     public CommandLineRunner demo(UserRepository repository) {
         return (args) -> {
             // save a user
@@ -38,11 +40,18 @@ public class MovieApiApplication {
             // fetch an individual user by role
             User user = repository.findByUsername("pete842");
 
-            log.info("User 'pete842' to watch medias:");
-            log.info("--------------------------------");
-            for (Media media : user.getToWatchMedias()) {
-                log.info(media.toString());
+            log.info("User 'pete842' to watch medias: #" + user.getToWatchMediaUser().size());
+            /*log.info("--------------------------------");
+            for (ToWatchMediaUser toWatch : user.getToWatchMediaUser()) {
+                log.info(toWatch.toString());
             }
+            log.info("");*/
+
+            log.info("User 'pete842' watched medias: #" + user.getWatchedMediaUser().size());
+            /*log.info("--------------------------------");
+            for (WatchedMediaUser watched : user.getWatchedMediaUser()) {
+                log.info(watched.toString());
+            }*/
             log.info("");
         };
     }

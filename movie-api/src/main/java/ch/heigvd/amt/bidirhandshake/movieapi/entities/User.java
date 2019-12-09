@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import org.hibernate.annotations.WhereJoinTable;
+import org.hibernate.annotations.Where;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @AllArgsConstructor
@@ -29,19 +28,13 @@ public class User {
     private String lastname;
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "media_user",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "media_id"))
-    @WhereJoinTable(clause = "watched is not null")
-    private List<Media> watchedMedias;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @Where(clause = "watched is not null")
+    @ToString.Exclude
+    private List<WatchedMediaUser> watchedMediaUser;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "media_user",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "media_id"))
-    @WhereJoinTable(clause = "watched is null")
-    private List<Media> toWatchMedias;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @Where(clause = "watched is null")
+    @ToString.Exclude
+    private List<ToWatchMediaUser> toWatchMediaUser;
 }

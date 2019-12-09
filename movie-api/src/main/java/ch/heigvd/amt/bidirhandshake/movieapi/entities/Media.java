@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import org.hibernate.annotations.Where;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -28,6 +29,13 @@ public class Media {
     private String mainGenre;
     private Integer rating;
 
-    //private Boolean inserted;
-    //private Boolean watched;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "media")
+    @Where(clause = "watched is not null")
+    @ToString.Exclude
+    private List<WatchedMediaUser> watchedMediaUser;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "media")
+    @Where(clause = "watched is null")
+    @ToString.Exclude
+    private List<ToWatchMediaUser> toWatchMediaUser;
 }
