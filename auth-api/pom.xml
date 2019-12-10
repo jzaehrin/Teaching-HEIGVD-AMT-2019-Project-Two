@@ -130,7 +130,7 @@
                                 <apiPackage>ch.heigvd.amt.bidirhandshake.authapi</apiPackage>
                                 <configPackage>ch.heigvd.amt.bidirhandshake.authapi.config</configPackage>
                                 <basePackage>ch.heigvd.amt.bidirhandshake.authapi</basePackage>
-                                <modelPackage>ch.heigvd.amt.bidirhandshake.authapi.model</modelPackage>
+                                <modelPackage>ch.heigvd.amt.bidirhandshake.authapi.dto</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>

@@ -1,0 +1,389 @@
+openapi: 3.0.1
+info:
+  title: AMT Project Two - Movie API
+  description: Project Two of the course AMT 2019 to the HEIG-VD
+  termsOfService: https://github.com/jzaehrin/Teaching-HEIGVD-AMT-2019-Project-Two
+  contact:
+    email: jonathan.zaehringer@heig-vd.ch
+  license:
+    name: TBD
+  version: 1.0.0
+externalDocs:
+  description: Markdown report
+  url: https://github.com/jzaehrin/Teaching-HEIGVD-AMT-2019-Project-Two
+tags:
+- name: users
+  description: Operations about users
+- name: user
+  description: Operations about user's data
+- name: medias
+  description: Operations about medias
+- name: watched
+  description: Operations about watched
+- name: towatch
+  description: Operations about toWatch
+paths:
+  /medias:
+    get:
+      tags:
+      - medias
+      security:
+        - BearerJWT: []
+      summary: Get all medias
+      operationId: getMedias
+      responses:
+        200:
+          description: Successfull query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medias'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+      - medias
+      security:
+        - BearerJWT: []
+      summary: Add a new Media
+      operationId: addMedia
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Media'
+      responses:
+        200:
+          description: Successfull query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Media'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{user_id}/towatch:
+    get:
+      tags:
+      - towatch
+      - user
+      security:
+        - BearerJWT: []
+      summary: Get all toWatch media form user
+      operationId: getToWatch
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: User identifiant number
+      responses:
+        200:
+          description: Successfull query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToWatchs'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+      - towatch
+      - user
+      security:
+        - BearerJWT: []
+      summary: add new toWatch media for user
+      operationId: addToWatch
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: User identifiant number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToWatch'
+      responses:
+        200:
+          description: Successfull query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToWatch'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{user_id}/towatch/{towatch_id}:
+    delete:
+      tags:
+      - towatch
+      - user
+      security:
+        - BearerJWT: []
+      summary: add new toWatch media for user
+      operationId: deleteToWatch
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: User identifiant number
+        - in: path
+          name: towatch_id
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: ToWatch identifiant number
+      responses:
+        200:
+          description: Successfull query
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{user_id}/watched:
+    get:
+      tags:
+      - watched
+      - user
+      security:
+        - BearerJWT: []
+      summary: Get all watched media form user
+      operationId: getWatched
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: User identifiant number
+      responses:
+        200:
+          description: Successfull query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Watcheds'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+      - watched
+      - user
+      security:
+        - BearerJWT: []
+      summary: add new Watched media for user
+      operationId: addWatched
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: User identifiant number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Watched'
+      responses:
+        200:
+          description: Successfull query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Watched'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{user_id}/watched/{watched_id}:
+    delete:
+      tags:
+      - towatch
+      - user
+      security:
+        - BearerJWT: []
+      summary: add new Watched media for user
+      operationId: deleteWatched
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: User identifiant number
+        - in: path
+          name: watched_id
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: Watched identifiant number
+      responses:
+        200:
+          description: Successfull query
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Media:
+      type: object
+      required: ["title", "release", "duration", "main_genre", "rating"]
+      properties:
+        id:
+          description: "In Database id"
+          type: integer
+          format: uint64
+        title:
+          type: string
+        release:
+          type: integer
+        duration:
+          type: integer
+        main_genre:
+          type: string
+        rating:
+          type: integer
+          format: tinyint
+          minimum: 0
+          maximum: 100
+    Medias:
+      type: array
+      items:
+        $ref: '#/components/schemas/Media'
+    Watched:
+      type: object
+      required: ["media_id", "watched", "rating"]
+      properties:
+        id:
+          description: "In Database id"
+          type: integer
+          format: uint64
+        media_id:
+          type: integer
+          format: uint64
+        watched:
+          description: "UTC timestamp"
+          type: integer
+        rating:
+          type: integer
+          format: tinyint
+          minimum: 0
+          maximum: 100
+    Watcheds:
+      type: array
+      items:
+        $ref: '#/components/schemas/Watched'
+    ToWatch:
+      type: object
+      required: ["media_id"]
+      properties:
+        id:
+          description: "In Database id"
+          type: integer
+          format: uint64
+        media_id:
+          type: integer
+          format: uint64
+    ToWatchs:
+      type: array
+      items:
+        $ref: '#/components/schemas/ToWatch'
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+  securitySchemes:
+    BearerJWT:
+      description: "JWT from authentification API"
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
