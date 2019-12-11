@@ -1,6 +1,7 @@
 package ch.heigvd.amt.bidirhandshake.movieapi.entities;
 
 import ch.heigvd.amt.bidirhandshake.movieapi.entities.keys.MediaUserKey;
+import com.sun.istack.Nullable;
 import lombok.*;
 
 import javax.persistence.*;

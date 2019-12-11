@@ -1,8 +1,6 @@
 package ch.heigvd.amt.bidirhandshake.movieapi;
 
-import ch.heigvd.amt.bidirhandshake.movieapi.entities.ToWatchMediaUser;
 import ch.heigvd.amt.bidirhandshake.movieapi.entities.User;
-import ch.heigvd.amt.bidirhandshake.movieapi.entities.WatchedMediaUser;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

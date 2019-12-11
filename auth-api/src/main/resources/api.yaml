@@ -18,6 +18,7 @@ tags:
   description: Operations for admin users
 servers:
   - url: http://localhost:3000/v1
+    description: dev server
 paths:
   /users/login:
     post:
@@ -96,11 +97,11 @@ paths:
                 $ref: '#/components/schemas/Error'
   /admin/users:
     post:
+      security:
+        - BearerJWT: []
       tags:
       - admin
       - users
-      security:
-        - BearerJWT: []
       summary: Create a new Users
       description: Create a new Users if the user is an admin
       operationId: createUser

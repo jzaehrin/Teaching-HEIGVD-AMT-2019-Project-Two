@@ -8,6 +8,9 @@ info:
   license:
     name: TBD
   version: 1.0.0
+servers:
+  - url: http://locahost/
+    description : dev server
 externalDocs:
   description: Markdown report
   url: https://github.com/jzaehrin/Teaching-HEIGVD-AMT-2019-Project-Two
