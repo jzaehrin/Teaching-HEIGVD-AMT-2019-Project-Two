@@ -146,7 +146,7 @@
                                 <useBeanValidation>true</useBeanValidation>
                                 <interfaceOnly>true</interfaceOnly>
                                 <delegatePattern>false</delegatePattern>
-                                <apiPackage>ch.heigvd.amt.bidirhandshake.authapi</apiPackage>
+                                <apiPackage>ch.heigvd.amt.bidirhandshake.authapi.api.endpoints</apiPackage>
                                 <configPackage>ch.heigvd.amt.bidirhandshake.authapi.config</configPackage>
                                 <basePackage>ch.heigvd.amt.bidirhandshake.authapi</basePackage>
                                 <modelPackage>ch.heigvd.amt.bidirhandshake.authapi.dto</modelPackage>

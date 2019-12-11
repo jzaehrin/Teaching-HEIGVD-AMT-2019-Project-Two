@@ -48,7 +48,7 @@ paths:
                 $ref: '#/components/schemas/Error'
         404:
           description: Invalid email or password
-  /users/{id}/password:
+  /users/{user_id}/password:
     post:
       tags:
       - users
@@ -59,7 +59,7 @@ paths:
       operationId: changePassword
       parameters:
         - in: path
-          name: id
+          name: user_id
           schema:
             type: integer
             format: int64
