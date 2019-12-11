@@ -23,7 +23,7 @@ public class UsersApiController implements UsersApi {
 
         if (user == null) return ResponseEntity.status(404).build();
 
-        if (passwordAuthentication.authenticate(user.getPassword().toCharArray(), userCredential.getPassword())) return ResponseEntity.ok().build();
+        if (passwordAuthentication.authenticate(userCredential.getPassword().toCharArray(), user.getPassword())) return ResponseEntity.ok().build();
 
         return ResponseEntity.badRequest().build();
     }
