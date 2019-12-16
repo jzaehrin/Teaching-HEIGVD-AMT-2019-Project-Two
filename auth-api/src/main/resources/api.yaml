@@ -20,7 +20,7 @@ servers:
   - url: http://localhost:3000/v1
     description: dev server
 paths:
-  /users/login:
+  /login:
     post:
       tags:
       - users
@@ -48,6 +48,10 @@ paths:
                 $ref: '#/components/schemas/Error'
         404:
           description: Invalid email or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /users/{user_id}/password:
     post:
       tags:
@@ -139,6 +143,7 @@ components:
   schemas:
     UserCredential:
       type: object
+      required: ["email", "password"]
       properties:
         email:
           type: string
@@ -146,15 +151,17 @@ components:
           type: string
     PasswordChanger:
       type: object
+      required: ["currentPassword", "password", "confirmPassword"]
       properties:
-        previousPassword:
+        currentPassword:
           type: string
         password:
           type: string
-        confirm_password:
+        confirmPassword:
           type: string
     User:
       type: object
+      required: ["username", "firstName", "lastName", "email", "password", "confirmPassword"]
       properties:
         username:
           type: string
@@ -166,7 +173,7 @@ components:
           type: string
         password:
           type: string
-        confirm_password:
+        confirmPassword:
           type: string
     Error:
       type: object

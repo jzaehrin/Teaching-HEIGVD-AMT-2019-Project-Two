@@ -150,6 +150,7 @@
                                 <useBeanValidation>true</useBeanValidation>
                                 <interfaceOnly>true</interfaceOnly>
                                 <delegatePattern>false</delegatePattern>
+                                <unhandledException>true</unhandledException>
                                 <apiPackage>ch.heigvd.amt.bidirhandshake.authapi.api.endpoints</apiPackage>
                                 <configPackage>ch.heigvd.amt.bidirhandshake.authapi.config</configPackage>
                                 <basePackage>ch.heigvd.amt.bidirhandshake.authapi</basePackage>

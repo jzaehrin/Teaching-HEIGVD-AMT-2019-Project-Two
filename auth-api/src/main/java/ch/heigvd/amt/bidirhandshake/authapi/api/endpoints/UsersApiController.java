@@ -1,49 +1,40 @@
 package ch.heigvd.amt.bidirhandshake.authapi.api.endpoints;
 
+import ch.heigvd.amt.bidirhandshake.authapi.api.exceptions.ApiError;
 import ch.heigvd.amt.bidirhandshake.authapi.api.utils.PasswordAuthentication;
-import ch.heigvd.amt.bidirhandshake.authapi.dto.UserCredential;
+import ch.heigvd.amt.bidirhandshake.authapi.dto.PasswordChanger;
 import ch.heigvd.amt.bidirhandshake.authapi.entities.User;
 import ch.heigvd.amt.bidirhandshake.authapi.repositories.UserRepository;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Date;
 
 @Controller
 public class UsersApiController implements UsersApi {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
-    PasswordAuthentication passwordAuthentication = new PasswordAuthentication(5);
+    @Autowired
+    private HttpServletRequest context;
 
-    final static String secret = "J9Z9crFXwy5tGJWfKvqGtP7nm71p4CHlT5aCkQLNqI2cHNncdmu36S3QeSPi1IJB";
+    protected PasswordAuthentication passwordAuthentication = new PasswordAuthentication(5);
 
-    public ResponseEntity<Void> login(@Valid UserCredential userCredential) {
-        User user = userRepository.findByEmail(userCredential.getEmail());
+    @Override
+    public ResponseEntity<ch.heigvd.amt.bidirhandshake.authapi.dto.User> changePassword(Long userId, @Valid PasswordChanger passwordChanger) throws Exception {
+        if (context.getAttribute("userId") != userId) throw new ApiError(HttpStatus.UNAUTHORIZED, "Unauthorized : Cannot change password of another user !");
 
-        if (user == null) return ResponseEntity.status(404).build();
+        if (!passwordChanger.getPassword().equals(passwordChanger.getConfirmPassword())) throw new ApiError(HttpStatus.BAD_REQUEST, "Malformed request body : The confirm password is different");
 
-        if (passwordAuthentication.authenticate(userCredential.getPassword().toCharArray(), user.getPassword())) {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            String token = JWT.create()
-                    .withIssuer("auth_api")
-                    .withExpiresAt(new Date(new Date().getTime() + (1000 * 60 * 60 * 24)))
-                    .withNotBefore(new Date())
-                    .withClaim("user_id", user.getId())
-                    .sign(algorithm);
+        User user = userRepository.findById((long)userId);
 
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.set("Authorization", token);
+        if (user == null || ! passwordAuthentication.authenticate(passwordChanger.getCurrentPassword().toCharArray(), user.getPassword()))
+            throw new ApiError(HttpStatus.UNAUTHORIZED, "Unauthorized : Current password is different");
 
-            return ResponseEntity.ok().headers(httpHeaders).build();
-        }
-
-        return ResponseEntity.badRequest().build();
+        throw new ApiError(HttpStatus.NOT_FOUND,"Invalid email or password");
     }
 }
