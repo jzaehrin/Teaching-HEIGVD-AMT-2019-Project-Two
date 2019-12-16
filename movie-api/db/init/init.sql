@@ -1,7 +1,8 @@
-create database if not exists `movieDBidir`;
+drop database if exists `movieDBidir`;
+create database `movieDBidir`;
 use `movieDBidir`;
 
-create table if not exists `medias`
+create table `medias`
 (
     `id`         int unsigned not null auto_increment,
     `title`      varchar(250) not null,
@@ -13,10 +14,9 @@ create table if not exists `medias`
     primary key (`id`)
 );
 
-create table if not exists `users`
+create table `users`
 (
-    `id`        int unsigned not null auto_increment,
-    `auth_id`   int unsigned not null,
+    `id`   int unsigned not null,
     `username`  varchar(250) not null,
     `firstname` varchar(250) not null,
     `lastname`  varchar(250) not null,
@@ -24,12 +24,11 @@ create table if not exists `users`
 
     primary key (`id`),
 
-    constraint `auth_id_uq` unique (`auth_id`),
     constraint `username_uq` unique (`username`),
     constraint `email_uq` unique (`email`)
 );
 
-create table if not exists `media_user`
+create table `media_user`
 (
     `id`       int unsigned not null auto_increment,
     `user_id`  int unsigned not null,
@@ -46,7 +45,7 @@ create table if not exists `media_user`
 );
 
 insert into `users`
-    (`auth_id`, `username`, `firstname`, `lastname`, `email`)
+    (`id`, `username`, `firstname`, `lastname`, `email`)
 values (1, 'pete842', 'Pierre', 'Kohler', 'pete842@mail.com'),
        (2, 'jzaehrin', 'Jonathan', 'Zaehringer', 'jzaehrin@mail.com'),
        (3, 'capito27', 'Filipe', 'Fortunato', 'capito27@mail.com');
