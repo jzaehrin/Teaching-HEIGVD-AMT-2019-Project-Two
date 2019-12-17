@@ -67,19 +67,19 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-spring</artifactId>
-            <version>4.2.0</version>
+            <version>4.7.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>4.2.0</version>
+            <version>4.7.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.masterthought</groupId>
             <artifactId>cucumber-reporting</artifactId>
-            <version>4.2.3</version>
+            <version>4.10.0</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>

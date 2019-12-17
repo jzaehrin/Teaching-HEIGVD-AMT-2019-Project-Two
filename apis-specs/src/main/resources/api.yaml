@@ -12,18 +12,18 @@ externalDocs:
   description: Markdown report
   url: https://github.com/jzaehrin/Teaching-HEIGVD-AMT-2019-Project-Two
 tags:
-  - name: users
-    description: Operations about users
-  - name: admin
-    description: Operations for admin users
+- name: users
+  description: Operations about users
+- name: admin
+  description: Operations for admin users
 servers:
   - url: http://localhost:3000/v1
     description: dev server
 paths:
-  /login:
+  /users/login:
     post:
       tags:
-        - users
+      - users
       summary: Login to an existing User
       operationId: login
       requestBody:
@@ -44,14 +44,10 @@ paths:
                 $ref: '#/components/schemas/Error'
         404:
           description: Invalid email or password
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /users/{user_id}/password:
     post:
       tags:
-        - users
+      - users
       security:
         - BearerJWT: []
       summary: Change user password
@@ -62,6 +58,7 @@ paths:
           name: user_id
           schema:
             type: integer
+            format: int64
           required: true
           description: User identifiant number
       requestBody:
@@ -72,6 +69,10 @@ paths:
       responses:
         200:
           description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
         400:
           description: Malformed request body
           content:
@@ -95,8 +96,8 @@ paths:
       security:
         - BearerJWT: []
       tags:
-        - admin
-        - users
+      - admin
+      - users
       summary: Create a new Users
       description: Create a new Users if the user is an admin
       operationId: createUser
@@ -104,14 +105,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserDTO'
+              $ref: '#/components/schemas/User'
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserDTO'
+                $ref: '#/components/schemas/User'
         400:
           description: Malformed request body
           content:
@@ -134,7 +135,6 @@ components:
   schemas:
     UserCredential:
       type: object
-      required: ["email", "password"]
       properties:
         email:
           type: string
@@ -142,27 +142,27 @@ components:
           type: string
     PasswordChanger:
       type: object
-      required: ["currentPassword", "password", "confirmPassword"]
       properties:
-        currentPassword:
+        previousPassword:
           type: string
         password:
           type: string
-        confirmPassword:
+        confirm_password:
           type: string
-    UserDTO:
+    User:
       type: object
-      required: ["username", "email", "role", "password", "confirmPassword"]
       properties:
         username:
           type: string
-        email:
+        firstName:
           type: string
-        role:
+        lastName:
+          type: string
+        email:
           type: string
         password:
           type: string
-        confirmPassword:
+        confirm_password:
           type: string
     Error:
       type: object

@@ -48,6 +48,12 @@ public class AuthApiApplication {
             log.info("--------------------------------------------");
             log.info(repository.findByUsername("pete842").toString());
 
+            log.info("");
+
+            // fetch users by last name
+            log.info("User found with findByEmail('pete842@mail.com'):");
+            log.info("--------------------------------------------");
+            log.info(repository.findByEmail("pete842@mail.com").toString());
 
             log.info("");
         };
