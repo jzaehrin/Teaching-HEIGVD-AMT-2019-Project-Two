@@ -23,7 +23,7 @@ public class LoginApiController implements LoginApi {
     @Autowired
     private UserRepository userRepository;
 
-    protected PasswordAuthentication passwordAuthentication = new PasswordAuthentication(5);
+    private PasswordAuthentication passwordAuthentication = new PasswordAuthentication(5);
 
     @Override
     public ResponseEntity<Void> login(@Valid UserCredential userCredential) throws Exception {

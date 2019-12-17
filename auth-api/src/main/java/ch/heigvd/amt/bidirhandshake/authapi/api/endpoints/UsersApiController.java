@@ -22,19 +22,23 @@ public class UsersApiController implements UsersApi {
     @Autowired
     private HttpServletRequest context;
 
-    protected PasswordAuthentication passwordAuthentication = new PasswordAuthentication(5);
+    private PasswordAuthentication passwordAuthentication = new PasswordAuthentication(5);
 
     @Override
-    public ResponseEntity<ch.heigvd.amt.bidirhandshake.authapi.dto.User> changePassword(Long userId, @Valid PasswordChanger passwordChanger) throws Exception {
+    public ResponseEntity<Void> changePassword(Integer userId, @Valid PasswordChanger passwordChanger) throws Exception {
         if (context.getAttribute("userId") != userId) throw new ApiError(HttpStatus.UNAUTHORIZED, "Unauthorized : Cannot change password of another user !");
 
         if (!passwordChanger.getPassword().equals(passwordChanger.getConfirmPassword())) throw new ApiError(HttpStatus.BAD_REQUEST, "Malformed request body : The confirm password is different");
 
-        User user = userRepository.findById((long)userId);
+        User user = userRepository.findById(userId);
 
         if (user == null || ! passwordAuthentication.authenticate(passwordChanger.getCurrentPassword().toCharArray(), user.getPassword()))
             throw new ApiError(HttpStatus.UNAUTHORIZED, "Unauthorized : Current password is different");
 
-        throw new ApiError(HttpStatus.NOT_FOUND,"Invalid email or password");
+        user.setPassword(passwordAuthentication.hash(passwordChanger.getPassword().toCharArray()));
+
+        userRepository.save(user);
+
+        return ResponseEntity.ok().build();
     }
 }

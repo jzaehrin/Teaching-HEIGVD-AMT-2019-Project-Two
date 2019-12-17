@@ -10,7 +10,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     User findByEmail(String email);
 
-    User findById(long id);
+    User findById(Integer id);
 
     List<User> findByRole(User.Role role);
+
+    User save(User user);
 }

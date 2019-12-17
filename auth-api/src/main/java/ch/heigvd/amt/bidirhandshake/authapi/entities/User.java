@@ -2,17 +2,14 @@ package ch.heigvd.amt.bidirhandshake.authapi.entities;
 
 import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.sql.Timestamp;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @ToString
 @EqualsAndHashCode
 @Entity

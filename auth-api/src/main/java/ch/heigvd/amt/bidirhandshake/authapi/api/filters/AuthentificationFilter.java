@@ -17,8 +17,6 @@ public class AuthentificationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("Test");
-
         HttpServletRequest req = (HttpServletRequest) request;
 
         String token = req.getHeader("Authorization");
@@ -29,7 +27,7 @@ public class AuthentificationFilter implements Filter {
 
         if(jwtDecoded == null) throw new ApiError(HttpStatus.UNAUTHORIZED, "Invalid Token");
 
-        request.setAttribute("userId", jwtDecoded.getClaim("user_id").asLong());
+        request.setAttribute("userId", jwtDecoded.getClaim("user_id").asInt());
 
         chain.doFilter(request, response);
     }

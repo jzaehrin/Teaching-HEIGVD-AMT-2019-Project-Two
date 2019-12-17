@@ -12,10 +12,10 @@ externalDocs:
   description: Markdown report
   url: https://github.com/jzaehrin/Teaching-HEIGVD-AMT-2019-Project-Two
 tags:
-- name: users
-  description: Operations about users
-- name: admin
-  description: Operations for admin users
+  - name: users
+    description: Operations about users
+  - name: admin
+    description: Operations for admin users
 servers:
   - url: http://localhost:3000/v1
     description: dev server
@@ -23,7 +23,7 @@ paths:
   /login:
     post:
       tags:
-      - users
+        - users
       summary: Login to an existing User
       operationId: login
       requestBody:
@@ -55,7 +55,7 @@ paths:
   /users/{user_id}/password:
     post:
       tags:
-      - users
+        - users
       security:
         - BearerJWT: []
       summary: Change user password
@@ -66,7 +66,6 @@ paths:
           name: user_id
           schema:
             type: integer
-            format: int64
           required: true
           description: User identifiant number
       requestBody:
@@ -77,10 +76,6 @@ paths:
       responses:
         200:
           description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
         400:
           description: Malformed request body
           content:
@@ -104,8 +99,8 @@ paths:
       security:
         - BearerJWT: []
       tags:
-      - admin
-      - users
+        - admin
+        - users
       summary: Create a new Users
       description: Create a new Users if the user is an admin
       operationId: createUser
@@ -113,14 +108,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserDTO'
       responses:
         200:
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserDTO'
         400:
           description: Malformed request body
           content:
@@ -159,17 +154,15 @@ components:
           type: string
         confirmPassword:
           type: string
-    User:
+    UserDTO:
       type: object
-      required: ["username", "firstName", "lastName", "email", "password", "confirmPassword"]
+      required: ["username", "email", "role", "password", "confirmPassword"]
       properties:
         username:
           type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
         email:
+          type: string
+        role:
           type: string
         password:
           type: string
