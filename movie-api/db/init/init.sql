@@ -86,4 +86,4 @@ delimiter ;
 
 call insertMediaUser;
 
-create sequence `hibernate_sequence`
+drop sequence `hibernate_sequence`

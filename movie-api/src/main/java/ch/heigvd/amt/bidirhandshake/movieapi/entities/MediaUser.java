@@ -11,10 +11,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 @EqualsAndHashCode
-@Entity
+@MappedSuperclass
 @Table(name = "media_user")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorFormula("case when watched is null then 1 else 2")
+@DiscriminatorFormula("case when watched is null then 1 else 2 end")
 public class MediaUser {
     @EmbeddedId
     protected MediaUserKey id;

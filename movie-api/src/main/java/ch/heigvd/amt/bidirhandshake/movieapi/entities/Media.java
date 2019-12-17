@@ -27,12 +27,10 @@ public class Media {
     private Integer rating;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "media")
-    @Where(clause = "watched is not null")
     @ToString.Exclude
     private List<WatchedMediaUser> watchedMediaUser;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "media")
-    @Where(clause = "watched is null")
     @ToString.Exclude
     private List<ToWatchMediaUser> toWatchMediaUser;
 }

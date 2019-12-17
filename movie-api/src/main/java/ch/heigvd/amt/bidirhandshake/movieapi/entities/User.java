@@ -25,12 +25,10 @@ public class User {
     private String email;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    @Where(clause = "watched is not null")
     @ToString.Exclude
     private List<WatchedMediaUser> watchedMediaUser;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    @Where(clause = "watched is null")
     @ToString.Exclude
     private List<ToWatchMediaUser> toWatchMediaUser;
 
