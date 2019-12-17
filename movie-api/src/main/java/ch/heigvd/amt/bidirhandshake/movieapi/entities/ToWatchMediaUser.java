@@ -2,6 +2,7 @@ package ch.heigvd.amt.bidirhandshake.movieapi.entities;
 
 import lombok.*;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "media_user")
+@DiscriminatorValue("1")
 public class ToWatchMediaUser extends MediaUser {
     @ToString.Exclude
     protected Integer rating;

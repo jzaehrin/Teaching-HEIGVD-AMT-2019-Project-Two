@@ -2,6 +2,8 @@ package ch.heigvd.amt.bidirhandshake.movieapi.entities.keys;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
@@ -17,11 +19,12 @@ import lombok.NoArgsConstructor;
 public class MediaUserKey implements Serializable {
 
     @Column(name = "id")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
     @Column(name = "user_id")
-    private Long userId;
+    private Integer userId;
 
     @Column(name = "media_id")
-    private Long mediaId;
+    private Integer mediaId;
 }

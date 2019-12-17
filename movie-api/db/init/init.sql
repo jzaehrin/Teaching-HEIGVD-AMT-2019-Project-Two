@@ -9,7 +9,7 @@ create table `medias`
     `release`    timestamp,
     `duration`   int unsigned,
     `main_genre` varchar(250),
-    `rating`     tinyint unsigned,
+    `rating`     int unsigned,
 
     primary key (`id`)
 );
@@ -33,7 +33,7 @@ create table `media_user`
     `id`       int unsigned not null auto_increment,
     `user_id`  int unsigned not null,
     `media_id` int unsigned not null,
-    `rating`   tinyint unsigned,
+    `rating`   int unsigned,
     `watched`  timestamp    null default null,
 
     primary key (`id`),
@@ -85,3 +85,5 @@ end;
 delimiter ;
 
 call insertMediaUser;
+
+create sequence `hibernate_sequence`
