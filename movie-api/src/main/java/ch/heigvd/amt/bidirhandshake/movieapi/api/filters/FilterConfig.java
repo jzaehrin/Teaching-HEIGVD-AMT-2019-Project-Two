@@ -11,7 +11,7 @@ public class FilterConfig {
         FilterRegistrationBean<AuthentificationFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new AuthentificationFilter());
-        registrationBean.addUrlPatterns("/users/*", "/admin/*");
+        registrationBean.addUrlPatterns("/media", "/users/*");
 
         return registrationBean;
     }
@@ -21,7 +21,7 @@ public class FilterConfig {
         FilterRegistrationBean<AuthorizationFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new AuthorizationFilter());
-        registrationBean.addUrlPatterns("/admin/*");
+        registrationBean.addUrlPatterns("/admin");
 
         return registrationBean;
     }

@@ -1,6 +1,6 @@
 package ch.heigvd.amt.bidirhandshake.movieapi.api.endpoints;
 
-import ch.heigvd.amt.bidirhandshake.movieapi.MediasApi;
+import ch.heigvd.amt.bidirhandshake.movieapi.MediaApi;
 import ch.heigvd.amt.bidirhandshake.movieapi.api.utils.MediaDTOHelper;
 import ch.heigvd.amt.bidirhandshake.movieapi.dto.MediaDTO;
 import ch.heigvd.amt.bidirhandshake.movieapi.entities.Media;
@@ -16,7 +16,7 @@ import javax.validation.constraints.Min;
 import java.util.List;
 
 @Controller
-public class MediaApiController implements MediasApi {
+public class MediaApiController implements MediaApi {
 
     @Autowired
     MediaRepository mediaRepository;
