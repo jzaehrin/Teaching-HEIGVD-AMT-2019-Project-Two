@@ -1,5 +1,6 @@
 show databases;
-create database if not exists `authDBidir`;
+drop database if exists `authDBidir`;
+create database `authDBidir`;
 use `authDBidir`;
 
 create table if not exists `users`
@@ -13,7 +14,6 @@ create table if not exists `users`
 
     primary key (`id`),
 
-    constraint `username_uq` unique (`username`),
     constraint `email_uq` unique (`email`)
 );
 

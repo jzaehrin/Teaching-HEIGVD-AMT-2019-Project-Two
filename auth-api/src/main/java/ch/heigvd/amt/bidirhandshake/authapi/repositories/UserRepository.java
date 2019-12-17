@@ -15,4 +15,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findByRole(User.Role role);
 
     User save(User user);
+
+    boolean existsByEmail(String email);
 }

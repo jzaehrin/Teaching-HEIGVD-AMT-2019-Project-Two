@@ -18,4 +18,14 @@ public class FilterConfig {
 
         return registrationBean;
     }
+
+    @Bean
+    public FilterRegistrationBean<AuthorizationFilter> AuthorizationFilter() {
+        FilterRegistrationBean<AuthorizationFilter> registrationBean = new FilterRegistrationBean<>();
+
+        registrationBean.setFilter(new AuthorizationFilter());
+        registrationBean.addUrlPatterns("/admin/*");
+
+        return registrationBean;
+    }
 }

@@ -20,6 +20,7 @@ public class JWTHelper {
                 .withExpiresAt(new Date(new Date().getTime() + (1000 * 60 * 60 * 24)))
                 .withNotBefore(new Date())
                 .withClaim("user_id", user.getId())
+                .withClaim("role", user.getRole().name())
                 .sign(algorithm);
     }
 
