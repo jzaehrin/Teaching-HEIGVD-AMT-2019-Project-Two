@@ -5,7 +5,6 @@ import ch.heigvd.amt.bidirhandshake.authapi.api.utils.UserDTOHelper;
 import ch.heigvd.amt.bidirhandshake.authapi.dto.UserDTO;
 import ch.heigvd.amt.bidirhandshake.authapi.entities.User;
 import ch.heigvd.amt.bidirhandshake.authapi.repositories.UserRepository;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
