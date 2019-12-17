@@ -15,25 +15,30 @@ externalDocs:
   description: Markdown report
   url: https://github.com/jzaehrin/Teaching-HEIGVD-AMT-2019-Project-Two
 tags:
-- name: users
-  description: Operations about users
-- name: user
-  description: Operations about user's data
-- name: medias
-  description: Operations about medias
-- name: watched
-  description: Operations about watched
-- name: towatch
-  description: Operations about toWatch
+  - name: users
+    description: Operations about users
+  - name: user
+    description: Operations about user's data
+  - name: medias
+    description: Operations about medias
+  - name: watched
+    description: Operations about watched
+  - name: towatch
+    description: Operations about toWatch
 paths:
   /medias:
     get:
       tags:
-      - medias
-      security:
-        - BearerJWT: []
+        - medias
       summary: Get all medias
       operationId: getMedias
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
       responses:
         200:
           description: Successfull query
@@ -55,11 +60,16 @@ paths:
                 $ref: '#/components/schemas/Error'
     post:
       tags:
-      - medias
-      security:
-        - BearerJWT: []
+        - medias
       summary: Add a new Media
       operationId: addMedia
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
       requestBody:
         content:
           application/json:
@@ -87,13 +97,17 @@ paths:
   /users/{user_id}/towatch:
     get:
       tags:
-      - towatch
-      - user
-      security:
-        - BearerJWT: []
+        - towatch
+        - user
       summary: Get all toWatch media form user
       operationId: getToWatch
       parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
         - in: path
           name: user_id
           schema:
@@ -122,13 +136,17 @@ paths:
                 $ref: '#/components/schemas/Error'
     post:
       tags:
-      - towatch
-      - user
-      security:
-        - BearerJWT: []
+        - towatch
+        - user
       summary: add new toWatch media for user
       operationId: addToWatch
       parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
         - in: path
           name: user_id
           schema:
@@ -163,13 +181,17 @@ paths:
   /users/{user_id}/towatch/{towatch_id}:
     delete:
       tags:
-      - towatch
-      - user
-      security:
-        - BearerJWT: []
+        - towatch
+        - user
       summary: add new toWatch media for user
       operationId: deleteToWatch
       parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
         - in: path
           name: user_id
           schema:
@@ -202,13 +224,17 @@ paths:
   /users/{user_id}/watched:
     get:
       tags:
-      - watched
-      - user
-      security:
-        - BearerJWT: []
+        - watched
+        - user
       summary: Get all watched media form user
       operationId: getWatched
       parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
         - in: path
           name: user_id
           schema:
@@ -237,13 +263,17 @@ paths:
                 $ref: '#/components/schemas/Error'
     post:
       tags:
-      - watched
-      - user
-      security:
-        - BearerJWT: []
+        - watched
+        - user
       summary: add new Watched media for user
       operationId: addWatched
       parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
         - in: path
           name: user_id
           schema:
@@ -278,13 +308,17 @@ paths:
   /users/{user_id}/watched/{watched_id}:
     delete:
       tags:
-      - towatch
-      - user
-      security:
-        - BearerJWT: []
+        - towatch
+        - user
       summary: add new Watched media for user
       operationId: deleteWatched
       parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
         - in: path
           name: user_id
           schema:
@@ -323,7 +357,6 @@ components:
         id:
           description: "In Database id"
           type: integer
-          format: uint64
         title:
           type: string
         release:
@@ -348,10 +381,8 @@ components:
         id:
           description: "In Database id"
           type: integer
-          format: uint64
         media_id:
           type: integer
-          format: uint64
         watched:
           description: "UTC timestamp"
           type: integer
@@ -371,10 +402,8 @@ components:
         id:
           description: "In Database id"
           type: integer
-          format: uint64
         media_id:
           type: integer
-          format: uint64
     ToWatchs:
       type: array
       items:

@@ -18,7 +18,7 @@ public class AdminAPIController implements AdminApi {
     private UserRepository userRepository;
 
     @Override
-    public ResponseEntity<UserDTO> createUser(@Valid UserDTO userDTO) throws Exception {
+    public ResponseEntity<UserDTO> createUser(String authorization, @Valid UserDTO userDTO) throws Exception {
         if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) throw new ApiError(HttpStatus.BAD_REQUEST, "Malformed request body : The confirm password is different");
 
         if (userRepository.existsByEmail(userDTO.getEmail())) throw new ApiError(HttpStatus.FORBIDDEN, "Bad request : Email already used");

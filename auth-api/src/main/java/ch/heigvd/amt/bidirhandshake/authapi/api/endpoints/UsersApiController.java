@@ -25,7 +25,7 @@ public class UsersApiController implements UsersApi {
     private PasswordAuthentication passwordAuthentication = new PasswordAuthentication(5);
 
     @Override
-    public ResponseEntity<Void> changePassword(Integer userId, @Valid PasswordChanger passwordChanger) throws Exception {
+    public ResponseEntity<Void> changePassword(String authorization, Integer userId, @Valid PasswordChanger passwordChanger) throws Exception {
         if (context.getAttribute("userId") != userId) throw new ApiError(HttpStatus.UNAUTHORIZED, "Unauthorized : Cannot change password of another user !");
 
         if (!passwordChanger.getPassword().equals(passwordChanger.getConfirmPassword())) throw new ApiError(HttpStatus.BAD_REQUEST, "Malformed request body : The confirm password is different");

@@ -52,12 +52,16 @@ paths:
     post:
       tags:
         - users
-      security:
-        - BearerJWT: []
       summary: Change user password
       description: Permit to change this own password
       operationId: changePassword
       parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
         - in: path
           name: user_id
           schema:
@@ -86,14 +90,19 @@ paths:
                 $ref: '#/components/schemas/Error'
   /admin/users:
     post:
-      security:
-        - BearerJWT: []
       tags:
         - admin
         - users
       summary: Create a new Users
       description: Create a new Users if the user is an admin
       operationId: createUser
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
       requestBody:
         content:
           application/json:
