@@ -1,7 +1,7 @@
 package ch.heigvd.amt.bidirhandshake.movieapi.api.filters;
 
-import ch.heigvd.amt.bidirhandshake.authapi.api.exceptions.ApiError;
-import ch.heigvd.amt.bidirhandshake.authapi.api.utils.JWTHelper;
+import ch.heigvd.amt.bidirhandshake.movieapi.api.exceptions.ApiError;
+import ch.heigvd.amt.bidirhandshake.movieapi.api.utils.JWTHelper;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;

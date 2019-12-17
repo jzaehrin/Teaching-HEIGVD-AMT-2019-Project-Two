@@ -116,6 +116,11 @@
             <version>4.2.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.8.3</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -151,10 +156,10 @@
                                 <useBeanValidation>true</useBeanValidation>
                                 <interfaceOnly>true</interfaceOnly>
                                 <delegatePattern>false</delegatePattern>
-                                <apiPackage>ch.heigvd.amt.bidirhandshake.authapi</apiPackage>
-                                <configPackage>ch.heigvd.amt.bidirhandshake.authapi.config</configPackage>
-                                <basePackage>ch.heigvd.amt.bidirhandshake.authapi</basePackage>
-                                <modelPackage>ch.heigvd.amt.bidirhandshake.authapi.dto</modelPackage>
+                                <apiPackage>ch.heigvd.amt.bidirhandshake.movieapi</apiPackage>
+                                <configPackage>ch.heigvd.amt.bidirhandshake.movieapi.config</configPackage>
+                                <basePackage>ch.heigvd.amt.bidirhandshake.movieapi</basePackage>
+                                <modelPackage>ch.heigvd.amt.bidirhandshake.movieapi.dto</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>

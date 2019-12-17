@@ -1,7 +1,7 @@
 package ch.heigvd.amt.bidirhandshake.movieapi.api.filters;
 
-import ch.heigvd.amt.bidirhandshake.authapi.api.exceptions.ApiError;
-import ch.heigvd.amt.bidirhandshake.authapi.entities.User;
+import ch.heigvd.amt.bidirhandshake.movieapi.api.exceptions.ApiError;
+import ch.heigvd.amt.bidirhandshake.movieapi.entities.User;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 

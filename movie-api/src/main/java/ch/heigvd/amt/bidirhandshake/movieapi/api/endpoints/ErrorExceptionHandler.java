@@ -1,7 +1,7 @@
 package ch.heigvd.amt.bidirhandshake.movieapi.api.endpoints;
 
-import ch.heigvd.amt.bidirhandshake.authapi.api.exceptions.ApiError;
-import ch.heigvd.amt.bidirhandshake.authapi.dto.Error;
+import ch.heigvd.amt.bidirhandshake.movieapi.api.exceptions.ApiError;
+import ch.heigvd.amt.bidirhandshake.movieapi.dto.Error;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;

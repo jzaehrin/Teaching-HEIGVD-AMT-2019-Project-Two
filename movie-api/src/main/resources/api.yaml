@@ -45,7 +45,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Medias'
+                $ref: '#/components/schemas/MediasDTO'
         400:
           description: Malformed request body
           content:
@@ -74,14 +74,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Media'
+              $ref: '#/components/schemas/MediaDTO'
       responses:
         200:
           description: Successfull query
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Media'
+                $ref: '#/components/schemas/MediaDTO'
         400:
           description: Malformed request body
           content:
@@ -121,7 +121,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ToWatchs'
+                $ref: '#/components/schemas/ToWatchsDTO'
         400:
           description: Malformed request body
           content:
@@ -158,14 +158,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ToWatch'
+              $ref: '#/components/schemas/ToWatchDTO'
       responses:
         200:
           description: Successfull query
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ToWatch'
+                $ref: '#/components/schemas/ToWatchDTO'
         400:
           description: Malformed request body
           content:
@@ -248,7 +248,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Watcheds'
+                $ref: '#/components/schemas/WatchedsDTO'
         400:
           description: Malformed request body
           content:
@@ -285,14 +285,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Watched'
+              $ref: '#/components/schemas/WatchedDTO'
       responses:
         200:
           description: Successfull query
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Watched'
+                $ref: '#/components/schemas/WatchedDTO'
         400:
           description: Malformed request body
           content:
@@ -350,7 +350,7 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Media:
+    MediaDTO:
       type: object
       required: ["title", "release", "duration", "main_genre", "rating"]
       properties:
@@ -370,11 +370,11 @@ components:
           format: tinyint
           minimum: 0
           maximum: 100
-    Medias:
+    MediasDTO:
       type: array
       items:
-        $ref: '#/components/schemas/Media'
-    Watched:
+        $ref: '#/components/schemas/MediaDTO'
+    WatchedDTO:
       type: object
       required: ["media_id", "watched", "rating"]
       properties:
@@ -391,11 +391,11 @@ components:
           format: tinyint
           minimum: 0
           maximum: 100
-    Watcheds:
+    WatchedsDTO:
       type: array
       items:
-        $ref: '#/components/schemas/Watched'
-    ToWatch:
+        $ref: '#/components/schemas/WatchedDTO'
+    ToWatchDTO:
       type: object
       required: ["media_id"]
       properties:
@@ -404,10 +404,10 @@ components:
           type: integer
         media_id:
           type: integer
-    ToWatchs:
+    ToWatchsDTO:
       type: array
       items:
-        $ref: '#/components/schemas/ToWatch'
+        $ref: '#/components/schemas/ToWatchDTO'
     Error:
       type: object
       properties:
