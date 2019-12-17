@@ -37,6 +37,6 @@ public class LoginApiController implements LoginApi {
             return ResponseEntity.ok().headers(httpHeaders).build();
         }
 
-        throw new ApiError(HttpStatus.NOT_FOUND,"Invalid email or password");
+        throw new ApiError(HttpStatus.FORBIDDEN,"Invalid email or password");
     }
 }

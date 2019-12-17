@@ -42,7 +42,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        404:
+        403:
           description: Invalid email or password
           content:
             application/json:
@@ -84,12 +84,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        404:
-          description: Email already used
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /admin/users:
     post:
       security:
@@ -124,7 +118,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        404:
+        403:
           description: Email already used
           content:
             application/json:

@@ -22,7 +22,7 @@ public class AdminAPIController implements AdminApi {
     public ResponseEntity<UserDTO> createUser(@Valid UserDTO userDTO) throws Exception {
         if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) throw new ApiError(HttpStatus.BAD_REQUEST, "Malformed request body : The confirm password is different");
 
-        if (userRepository.existsByEmail(userDTO.getEmail())) throw new ApiError(HttpStatus.BAD_REQUEST, "Bad request : Email already used");
+        if (userRepository.existsByEmail(userDTO.getEmail())) throw new ApiError(HttpStatus.FORBIDDEN, "Bad request : Email already used");
 
         User user = userRepository.save(UserDTOHelper.toEntity(userDTO));
 
