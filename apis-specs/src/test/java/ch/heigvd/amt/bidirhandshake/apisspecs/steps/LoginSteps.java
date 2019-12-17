@@ -5,9 +5,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import kong.unirest.HttpResponse;
-import kong.unirest.JsonNode;
-import kong.unirest.Unirest;
+import kong.unirest.*;
 
 import static org.junit.Assert.*;
 
@@ -42,8 +40,16 @@ public class LoginSteps {
     @When("I POST it to the route {string} as {string}")
     public void iPOSTItToTheGivenRouteAsGivenContentType(String route, String contentType) {
         response = Unirest.post(BASE_URL + route)
-                .header("Content-Type", contentType)
                 .body(userCredential)
+                .headerReplace("Content-Type", contentType)
+                .asJson();
+        }
+
+    @When("I POST it to the route {string} as malformed {string}")
+    public void iPOSTItToTheGivenRouteAsMalformedGivenContentType(String route, String contentType) {
+        response = Unirest.post(BASE_URL + route)
+                .body(userCredential.toString())
+                .headerReplace("Content-Type", contentType)
                 .asJson();
     }
 
@@ -58,8 +64,8 @@ public class LoginSteps {
         assertNotNull(response.getHeaders().get(headerKey));
     }
 
-    @And("^I receive a response without a jwt in (\\w+) header$")
-    public void iReceiveAResponseWithoutAJwtInAuthorizationHeader(String headerKey) {
+    @And("^I receive a response without (\\w+) header$")
+    public void iReceiveAResponseWithoutAuthorizationHeader(String headerKey) {
         assertFalse(response.getHeaders().containsKey(headerKey));
     }
 }
