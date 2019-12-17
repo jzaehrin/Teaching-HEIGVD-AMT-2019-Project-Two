@@ -5,6 +5,8 @@ import ch.heigvd.amt.bidirhandshake.movieapi.entities.Media;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MediaDTOHelper {
 
@@ -14,6 +16,10 @@ public class MediaDTOHelper {
                                 .duration(media.getDuration())
                                 .mainGenre(media.getMainGenre())
                                 .rating(media.getRating());
+    }
+
+    public static List<MediaDTO> fromEntity(List<Media> medias) {
+        return  medias.stream().map(media -> fromEntity(media)).collect(Collectors.toList());
     }
 
     public static Media toEntity(MediaDTO mediaDTO) {
@@ -27,5 +33,9 @@ public class MediaDTOHelper {
         media.setRelease(Timestamp.from(Instant.ofEpochSecond(mediaDTO.getRelease())));
 
         return media;
+    }
+
+    public static List<Media> toEntity(List<MediaDTO> mediasDTO) {
+        return  mediasDTO.stream().map(media -> toEntity(media)).collect(Collectors.toList());
     }
 }

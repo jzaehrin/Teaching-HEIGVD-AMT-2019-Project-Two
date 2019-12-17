@@ -39,6 +39,20 @@ paths:
             type: string
           required: true
           description: JWT from auth_api
+        - in: query
+          name: pageNumber
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: page number
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            minimum: 1
+            default: 20
+          description: page size
       responses:
         200:
           description: Successfull query
@@ -115,6 +129,20 @@ paths:
             format: int64
           required: true
           description: User identifiant number
+        - in: query
+          name: pageNumber
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: page number
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            minimum: 1
+            default: 20
+          description: page size
       responses:
         200:
           description: Successfull query
@@ -206,6 +234,20 @@ paths:
             format: int64
           required: true
           description: ToWatch identifiant number
+        - in: query
+          name: pageNumber
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: page number
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            minimum: 1
+            default: 20
+          description: page size
       responses:
         200:
           description: Successfull query
@@ -242,6 +284,20 @@ paths:
             format: int64
           required: true
           description: User identifiant number
+        - in: query
+          name: pageNumber
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: page number
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            minimum: 1
+            default: 20
+          description: page size
       responses:
         200:
           description: Successfull query
