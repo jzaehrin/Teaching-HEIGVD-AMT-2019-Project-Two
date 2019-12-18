@@ -126,7 +126,6 @@ paths:
           name: user_id
           schema:
             type: integer
-            format: int64
           required: true
           description: User identifiant number
         - in: query
@@ -179,7 +178,6 @@ paths:
           name: user_id
           schema:
             type: integer
-            format: int64
           required: true
           description: User identifiant number
       requestBody:
@@ -224,14 +222,12 @@ paths:
           name: user_id
           schema:
             type: integer
-            format: int64
           required: true
           description: User identifiant number
         - in: path
           name: towatch_id
           schema:
             type: integer
-            format: int64
           required: true
           description: ToWatch identifiant number
         - in: query
@@ -281,7 +277,6 @@ paths:
           name: user_id
           schema:
             type: integer
-            format: int64
           required: true
           description: User identifiant number
         - in: query
@@ -334,7 +329,6 @@ paths:
           name: user_id
           schema:
             type: integer
-            format: int64
           required: true
           description: User identifiant number
       requestBody:
@@ -379,14 +373,12 @@ paths:
           name: user_id
           schema:
             type: integer
-            format: int64
           required: true
           description: User identifiant number
         - in: path
           name: watched_id
           schema:
             type: integer
-            format: int64
           required: true
           description: Watched identifiant number
       responses:
@@ -439,6 +431,8 @@ components:
           type: integer
         media_id:
           type: integer
+        user_id:
+          type: integer
         watched:
           description: "UTC timestamp"
           type: integer
@@ -459,6 +453,8 @@ components:
           description: "In Database id"
           type: integer
         media_id:
+          type: integer
+        user_id:
           type: integer
     ToWatchsDTO:
       type: array

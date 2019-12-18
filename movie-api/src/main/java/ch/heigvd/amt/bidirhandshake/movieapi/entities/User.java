@@ -17,18 +17,16 @@ import java.util.List;
 @Table(name = "users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String username;
-    private String firstname;
-    private String lastname;
-    private String email;
+    private Integer globalId;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @ToString.Exclude
     private List<WatchedMediaUser> watchedMediaUser;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @ToString.Exclude
     private List<ToWatchMediaUser> toWatchMediaUser;
 

@@ -28,7 +28,8 @@ public class MovieApiApplication {
 
     @Bean
     @Transactional
-    public CommandLineRunner demo(UserRepository repository, ToWatchMediaUserRepository repo2) {
+
+    public CommandLineRunner demo(UserRepository repository, ToWatchMediaUserRepository toWatchMediaUserRepository) {
         return (args) -> {
             // save a user
             // repository.save(new User(...));
@@ -42,7 +43,7 @@ public class MovieApiApplication {
             log.info("");
 
             // fetch an individual user by role
-            User user = repository.findByUsername("pete842");
+            User user = repository.findById(1).orElse(null);
 
             //log.info("User 'pete842' to watch medias: #" + user.getToWatchMediaUser().size());
             /*log.info("--------------------------------");
@@ -59,10 +60,10 @@ public class MovieApiApplication {
             log.info("");
 
             //Page<ToWatchMediaUser> toWatchMediaUser = repo2.findAllByUser(PageRequest.of(1, 20), user);
-            Page<ToWatchMediaUser> toWatchMediaUser = repo2.findAllByUser(PageRequest.of(1, 20), user);
+            Page<ToWatchMediaUser> toWatchMediaUser = toWatchMediaUserRepository.findAllByUser(PageRequest.of(1, 20), user);
             log.info("User 'pete842' watched medias: #" + toWatchMediaUser.getContent().size());
 
-            Iterable<ToWatchMediaUser> toWatchMediaUser2 = repo2.findAll();
+            Iterable<ToWatchMediaUser> toWatchMediaUser2 = toWatchMediaUserRepository.findAll();
             log.info("User 'pete842' watched medias: #" + toWatchMediaUser2);
         };
     }

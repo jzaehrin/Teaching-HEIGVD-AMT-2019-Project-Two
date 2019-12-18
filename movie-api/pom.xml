@@ -156,6 +156,7 @@
                                 <useBeanValidation>true</useBeanValidation>
                                 <interfaceOnly>true</interfaceOnly>
                                 <delegatePattern>false</delegatePattern>
+                                <unhandledException>true</unhandledException>
                                 <apiPackage>ch.heigvd.amt.bidirhandshake.movieapi</apiPackage>
                                 <configPackage>ch.heigvd.amt.bidirhandshake.movieapi.config</configPackage>
                                 <basePackage>ch.heigvd.amt.bidirhandshake.movieapi</basePackage>

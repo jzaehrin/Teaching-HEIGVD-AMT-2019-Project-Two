@@ -10,6 +10,5 @@ import java.util.List;
 
 
 public interface ToWatchMediaUserRepository extends CrudRepository<ToWatchMediaUser, Integer> {
-    public Page<ToWatchMediaUser> findAllByUser(Pageable pageable, User user);
-    public List<ToWatchMediaUser> findAllByUser(User user);
+    Page<ToWatchMediaUser> findAllByUser(Pageable pageable, User user);
 }

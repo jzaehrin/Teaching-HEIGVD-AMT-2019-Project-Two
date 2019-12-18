@@ -17,7 +17,7 @@ import javax.persistence.*;
 @DiscriminatorFormula("case when watched is null then 1 else 2 end")
 public class MediaUser {
     @EmbeddedId
-    protected MediaUserKey id;
+    protected MediaUserKey mediaUserKey;
 
     @ManyToOne
     @MapsId("userId")

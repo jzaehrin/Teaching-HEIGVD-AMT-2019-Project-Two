@@ -22,14 +22,14 @@ public class MediaApiController implements MediaApi {
     MediaRepository mediaRepository;
 
     @Override
-    public ResponseEntity<MediaDTO> addMedia(String authorization, @Valid MediaDTO mediaDTO) {
+    public ResponseEntity<MediaDTO> addMedia(String authorization, @Valid MediaDTO mediaDTO) throws Exception {
         Media media = mediaRepository.save(MediaDTOHelper.toEntity(mediaDTO));
 
         return ResponseEntity.ok().body(MediaDTOHelper.fromEntity(media));
     }
 
     @Override
-    public ResponseEntity<List<MediaDTO>> getMedias(String authorization, @Min(1) @Valid Integer pageNumber, @Min(1) @Valid Integer pageSize) {
+    public ResponseEntity<List<MediaDTO>> getMedias(String authorization, @Min(1) @Valid Integer pageNumber, @Min(1) @Valid Integer pageSize) throws Exception {
         Page<Media> medias = mediaRepository.findAll(PageRequest.of(pageNumber, pageSize));
 
         return ResponseEntity.ok().body(MediaDTOHelper.fromEntity(medias.toList()));
