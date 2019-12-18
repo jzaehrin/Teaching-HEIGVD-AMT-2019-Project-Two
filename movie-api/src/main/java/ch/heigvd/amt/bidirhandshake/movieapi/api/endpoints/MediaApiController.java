@@ -1,6 +1,5 @@
 package ch.heigvd.amt.bidirhandshake.movieapi.api.endpoints;
 
-import ch.heigvd.amt.bidirhandshake.movieapi.MediaApi;
 import ch.heigvd.amt.bidirhandshake.movieapi.api.utils.MediaDTOHelper;
 import ch.heigvd.amt.bidirhandshake.movieapi.dto.MediaDTO;
 import ch.heigvd.amt.bidirhandshake.movieapi.entities.Media;

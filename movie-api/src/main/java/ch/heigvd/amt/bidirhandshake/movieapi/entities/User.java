@@ -3,7 +3,6 @@ package ch.heigvd.amt.bidirhandshake.movieapi.entities;
 import javax.persistence.*;
 
 import lombok.*;
-import org.hibernate.annotations.Where;
 
 import java.util.List;
 

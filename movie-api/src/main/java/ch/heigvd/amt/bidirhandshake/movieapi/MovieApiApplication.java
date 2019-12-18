@@ -60,11 +60,11 @@ public class MovieApiApplication {
             log.info("");
 
             //Page<ToWatchMediaUser> toWatchMediaUser = repo2.findAllByUser(PageRequest.of(1, 20), user);
-            Page<ToWatchMediaUser> toWatchMediaUser = toWatchMediaUserRepository.findAllByUser(PageRequest.of(1, 20), user);
-            log.info("User 'pete842' watched medias: #" + toWatchMediaUser.getContent().size());
+            //Page<ToWatchMediaUser> toWatchMediaUser = toWatchMediaUserRepository.findAllByUser(PageRequest.of(1, 20), user);
+            //log.info("User 'pete842' watched medias: #" + toWatchMediaUser.getContent().size());
 
-            Iterable<ToWatchMediaUser> toWatchMediaUser2 = toWatchMediaUserRepository.findAll();
-            log.info("User 'pete842' watched medias: #" + toWatchMediaUser2);
+            //Iterable<ToWatchMediaUser> toWatchMediaUser2 = toWatchMediaUserRepository.findAll();
+            //log.info("User 'pete842' watched medias: #" + toWatchMediaUser2);
         };
     }
 }

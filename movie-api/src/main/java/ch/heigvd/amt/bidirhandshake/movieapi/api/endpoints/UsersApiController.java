@@ -1,14 +1,13 @@
 package ch.heigvd.amt.bidirhandshake.movieapi.api.endpoints;
 
-import ch.heigvd.amt.bidirhandshake.movieapi.UsersApi;
 import ch.heigvd.amt.bidirhandshake.movieapi.api.exceptions.ApiError;
-import ch.heigvd.amt.bidirhandshake.movieapi.api.utils.MediaDTOHelper;
 import ch.heigvd.amt.bidirhandshake.movieapi.api.utils.ToWatchDTOHelper;
+import ch.heigvd.amt.bidirhandshake.movieapi.api.utils.WatchedDTOHelper;
 import ch.heigvd.amt.bidirhandshake.movieapi.dto.ToWatchDTO;
 import ch.heigvd.amt.bidirhandshake.movieapi.dto.WatchedDTO;
-import ch.heigvd.amt.bidirhandshake.movieapi.entities.Media;
 import ch.heigvd.amt.bidirhandshake.movieapi.entities.ToWatchMediaUser;
 import ch.heigvd.amt.bidirhandshake.movieapi.entities.User;
+import ch.heigvd.amt.bidirhandshake.movieapi.entities.WatchedMediaUser;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.ToWatchMediaUserRepository;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.UserRepository;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.WatchedMediaUserRepository;
@@ -19,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
@@ -35,30 +35,58 @@ public class UsersApiController implements UsersApi {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private HttpServletRequest context;
 
     @Override
     public ResponseEntity<ToWatchDTO> addToWatch(String authorization, Integer userId, @Valid ToWatchDTO toWatchDTO) throws Exception {
-        return null;
+        if (!context.getAttribute("user_id").equals(userId)) throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
+        existOrCreate(userId);
+
+        toWatchDTO.setUserId(userId);
+        ToWatchMediaUser toWatchMediaUser = ToWatchDTOHelper.toEntity(toWatchDTO);
+
+        toWatchMediaUser = toWatchMediaUserRepository.save(toWatchMediaUser);
+
+        return ResponseEntity.ok().body(ToWatchDTOHelper.fromEntity(toWatchMediaUser));
     }
 
     @Override
     public ResponseEntity<WatchedDTO> addWatched(String authorization, Integer userId, @Valid WatchedDTO watchedDTO) throws Exception {
-        return null;
+        if (!context.getAttribute("user_id").equals(userId)) throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
+        existOrCreate(userId);
+
+        watchedDTO.setUserId(userId);
+        WatchedMediaUser watchedMediaUser = WatchedDTOHelper.toEntity(watchedDTO);
+
+        watchedMediaUser = watchedMediaUserRepository.save(watchedMediaUser);
+
+        return ResponseEntity.ok().body(WatchedDTOHelper.fromEntity(watchedMediaUser));
     }
 
     @Override
     public ResponseEntity<Void> deleteToWatch(String authorization, Integer userId, Integer towatchId, @Min(1) @Valid Integer pageNumber, @Min(1) @Valid Integer pageSize) throws Exception {
-        return null;
+        if (!context.getAttribute("user_id").equals(userId)) throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
+        existOrCreate(userId);
+
+        toWatchMediaUserRepository.deleteById(towatchId);
+
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<Void> deleteWatched(String authorization, Integer userId, Integer watchedId) throws Exception {
-        return null;
+        if (!context.getAttribute("user_id").equals(userId)) throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
+        existOrCreate(userId);
+
+        watchedMediaUserRepository.deleteById(watchedId);
+
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<List<ToWatchDTO>> getToWatch(String authorization, Integer userId, @Min(1) @Valid Integer pageNumber, @Min(1) @Valid Integer pageSize) throws Exception {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ApiError(HttpStatus.NOT_FOUND, "User not found"));
+        User user = userRepository.findByGlobalId(userId).orElseThrow(() -> new ApiError(HttpStatus.NOT_FOUND, "User not found"));
 
         Page<ToWatchMediaUser> toWatchMediaUser = toWatchMediaUserRepository.findAllByUser(PageRequest.of(pageNumber, pageSize), user);
 
@@ -67,8 +95,21 @@ public class UsersApiController implements UsersApi {
 
     @Override
     public ResponseEntity<List<WatchedDTO>> getWatched(String authorization, Integer userId, @Min(1) @Valid Integer pageNumber, @Min(1) @Valid Integer pageSize) throws Exception {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ApiError(HttpStatus.NOT_FOUND, "User not found"));
+        User user = userRepository.findByGlobalId(userId).orElseThrow(() -> new ApiError(HttpStatus.NOT_FOUND, "User not found"));
 
-        return null;
+        Page<WatchedMediaUser> watchedsMediaUsers = watchedMediaUserRepository.findAllByUser(PageRequest.of(pageNumber, pageSize), user);
+
+        return ResponseEntity.ok().body(WatchedDTOHelper.fromEntity(watchedsMediaUsers.toList()));
+    }
+
+    private void existOrCreate(Integer globalId) {
+        if (!userRepository.existsById(globalId)) {
+            User newUser = new User();
+
+            newUser.setGlobalId(globalId);
+            newUser.setId(null);
+
+            userRepository.save(newUser);
+        }
     }
 }
