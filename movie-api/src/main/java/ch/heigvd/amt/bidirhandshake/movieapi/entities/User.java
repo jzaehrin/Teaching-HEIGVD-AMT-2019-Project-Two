@@ -16,10 +16,7 @@ import java.util.List;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
-    private Integer globalId;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @ToString.Exclude

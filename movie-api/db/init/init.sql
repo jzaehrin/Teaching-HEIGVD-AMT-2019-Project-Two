@@ -17,38 +17,28 @@ create table `medias`
 create table `users`
 (
     `id`   int unsigned not null,
-    `username`  varchar(250) not null,
-    `firstname` varchar(250) not null,
-    `lastname`  varchar(250) not null,
-    `email`     varchar(250) not null,
 
-    primary key (`id`),
-
-    constraint `username_uq` unique (`username`),
-    constraint `email_uq` unique (`email`)
+    primary key (`id`)
 );
 
 create table `media_user`
 (
-    `id`       int unsigned not null auto_increment,
     `user_id`  int unsigned not null,
     `media_id` int unsigned not null,
     `rating`   int unsigned,
     `watched`  timestamp    null default null,
 
-    primary key (`id`),
+    primary key (`user_id`, `media_id`),
 
     foreign key (`user_id`) references `users` (`id`),
-    foreign key (`media_id`) references `medias` (`id`),
-
-    constraint uq_association unique (`user_id`, `media_id`)
+    foreign key (`media_id`) references `medias` (`id`)
 );
 
 insert into `users`
-    (`id`, `username`, `firstname`, `lastname`, `email`)
-values (1, 'pete842', 'Pierre', 'Kohler', 'pete842@mail.com'),
-       (2, 'jzaehrin', 'Jonathan', 'Zaehringer', 'jzaehrin@mail.com'),
-       (3, 'capito27', 'Filipe', 'Fortunato', 'capito27@mail.com');
+    (`id`)
+values (1),
+       (2),
+       (3);
 
 load data local infile '/home/pete/workspace/AMT/Teaching-HEIGVD-AMT-2019-Project-Two/movie-api/db/init/out.csv' into table `medias` fields terminated by '\t' lines terminated by '\n' (`title`, @release, `duration`, `main_genre`, `rating`) set `release` = FROM_UNIXTIME(@release);
 

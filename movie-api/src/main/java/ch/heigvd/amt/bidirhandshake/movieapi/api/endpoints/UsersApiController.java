@@ -49,11 +49,11 @@ public class UsersApiController implements UsersApi {
         existOrCreate(userId);
 
         toWatchDTO.setUserId(userId);
-        ToWatchMediaUser toWatchMediaUser = ToWatchDTOHelper.toEntity(toWatchDTO, mediaRepository, userRepository);
+        ToWatchMediaUser toWatchMediaUser = ToWatchDTOHelper.toEntity(toWatchDTO);
 
         toWatchMediaUser = toWatchMediaUserRepository.save(toWatchMediaUser);
 
-        return ResponseEntity.ok().body(ToWatchDTOHelper.fromEntity(toWatchMediaUser).id(toWatchMediaUser.getId()));
+        return ResponseEntity.ok().body(ToWatchDTOHelper.fromEntity(toWatchMediaUser));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class UsersApiController implements UsersApi {
 
         watchedMediaUser = watchedMediaUserRepository.save(watchedMediaUser);
 
-        return ResponseEntity.ok().body(WatchedDTOHelper.fromEntity(watchedMediaUser).id(watchedMediaUser.getId()));
+        return ResponseEntity.ok().body(WatchedDTOHelper.fromEntity(watchedMediaUser));
     }
 
     @Override
@@ -99,7 +99,7 @@ public class UsersApiController implements UsersApi {
 
     @Override
     public ResponseEntity<List<ToWatchDTO>> getToWatch(String authorization, Integer userId, @Min(1) @Valid Integer pageNumber, @Min(1) @Valid Integer pageSize) throws Exception {
-        User user = userRepository.findByGlobalId(userId).orElseThrow(() -> new ApiError(HttpStatus.NOT_FOUND, "User not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ApiError(HttpStatus.NOT_FOUND, "User not found"));
 
         Page<ToWatchMediaUser> toWatchMediaUser = toWatchMediaUserRepository.findAllByUser(PageRequest.of(pageNumber, pageSize), user);
 
@@ -108,19 +108,17 @@ public class UsersApiController implements UsersApi {
 
     @Override
     public ResponseEntity<List<WatchedDTO>> getWatched(String authorization, Integer userId, @Min(1) @Valid Integer pageNumber, @Min(1) @Valid Integer pageSize) throws Exception {
-        User user = userRepository.findByGlobalId(userId).orElseThrow(() -> new ApiError(HttpStatus.NOT_FOUND, "User not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ApiError(HttpStatus.NOT_FOUND, "User not found"));
 
         Page<WatchedMediaUser> watchedsMediaUsers = watchedMediaUserRepository.findAllByUser(PageRequest.of(pageNumber, pageSize), user);
 
         return ResponseEntity.ok().body(WatchedDTOHelper.fromEntity(watchedsMediaUsers.toList()));
     }
 
-    private void existOrCreate(Integer globalId) {
-        if (!userRepository.existsById(globalId)) {
+    private void existOrCreate(Integer id) {
+        if (!userRepository.existsById(id)) {
             User newUser = new User();
-
-            newUser.setGlobalId(globalId);
-            newUser.setId(null);
+            newUser.setId(id);
 
             userRepository.save(newUser);
         }

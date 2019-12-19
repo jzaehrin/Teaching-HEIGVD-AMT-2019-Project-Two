@@ -426,9 +426,6 @@ components:
       type: object
       required: ["media_id", "watched", "rating"]
       properties:
-        id:
-          description: "In Database id"
-          type: integer
         media_id:
           type: integer
         user_id:
@@ -449,9 +446,6 @@ components:
       type: object
       required: ["media_id"]
       properties:
-        id:
-          description: "In Database id"
-          type: integer
         media_id:
           type: integer
         user_id:

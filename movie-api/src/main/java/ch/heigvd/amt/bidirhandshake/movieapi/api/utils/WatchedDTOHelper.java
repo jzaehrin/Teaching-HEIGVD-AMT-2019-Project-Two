@@ -2,6 +2,7 @@ package ch.heigvd.amt.bidirhandshake.movieapi.api.utils;
 
 import ch.heigvd.amt.bidirhandshake.movieapi.dto.WatchedDTO;
 import ch.heigvd.amt.bidirhandshake.movieapi.entities.WatchedMediaUser;
+import ch.heigvd.amt.bidirhandshake.movieapi.entities.keys.MediaUserKey;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.MediaRepository;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +14,9 @@ import java.util.stream.Collectors;
 
 public class WatchedDTOHelper {
 
-    @Autowired
-    private static UserRepository userRepository;
-
-    @Autowired
-    private static MediaRepository mediaRepository;
-
     public static WatchedDTO fromEntity(WatchedMediaUser watchedMediaUser) {
-        return new WatchedDTO().id(watchedMediaUser.getId())
-                                .mediaId(watchedMediaUser.getMedia().getId())
-                                .userId(watchedMediaUser.getUser().getId())
+        return new WatchedDTO().mediaId(watchedMediaUser.getId().getMediaId())
+                                .userId(watchedMediaUser.getId().getUserId())
                                 .rating(watchedMediaUser.getRating())
                                 .watched(watchedMediaUser.getWatched().toInstant().getNano() / 1000000);
     }
@@ -34,9 +28,7 @@ public class WatchedDTOHelper {
     public static WatchedMediaUser toEntity(WatchedDTO watchedDTO) {
         WatchedMediaUser watchedMediaUser = new WatchedMediaUser();
 
-        watchedMediaUser.setId(null);
-        watchedMediaUser.setMedia(mediaRepository.findById(watchedDTO.getMediaId()).orElse(null));
-        watchedMediaUser.setUser(userRepository.findById(watchedDTO.getUserId()).orElse(null));
+        watchedMediaUser.setId(new MediaUserKey(watchedDTO.getUserId(), watchedDTO.getMediaId()));
         watchedMediaUser.setRating(watchedDTO.getRating());
         watchedMediaUser.setWatched(Timestamp.from(Instant.ofEpochSecond(watchedDTO.getWatched())));
 
