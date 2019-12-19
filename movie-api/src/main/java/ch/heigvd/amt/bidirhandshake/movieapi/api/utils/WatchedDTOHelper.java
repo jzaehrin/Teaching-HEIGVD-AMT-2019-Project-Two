@@ -1,10 +1,7 @@
 package ch.heigvd.amt.bidirhandshake.movieapi.api.utils;
 
-import ch.heigvd.amt.bidirhandshake.movieapi.dto.ToWatchDTO;
 import ch.heigvd.amt.bidirhandshake.movieapi.dto.WatchedDTO;
-import ch.heigvd.amt.bidirhandshake.movieapi.entities.ToWatchMediaUser;
 import ch.heigvd.amt.bidirhandshake.movieapi.entities.WatchedMediaUser;
-import ch.heigvd.amt.bidirhandshake.movieapi.entities.keys.MediaUserKey;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.MediaRepository;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +20,9 @@ public class WatchedDTOHelper {
     private static MediaRepository mediaRepository;
 
     public static WatchedDTO fromEntity(WatchedMediaUser watchedMediaUser) {
-        return new WatchedDTO().id(watchedMediaUser.getMediaUserKey().getId())
-                                .mediaId(watchedMediaUser.getMediaUserKey().getMediaId())
-                                .userId(watchedMediaUser.getMediaUserKey().getUserId())
+        return new WatchedDTO().id(watchedMediaUser.getId())
+                                .mediaId(watchedMediaUser.getMedia().getId())
+                                .userId(watchedMediaUser.getUser().getId())
                                 .rating(watchedMediaUser.getRating())
                                 .watched(watchedMediaUser.getWatched().toInstant().getNano() / 1000000);
     }
@@ -37,7 +34,9 @@ public class WatchedDTOHelper {
     public static WatchedMediaUser toEntity(WatchedDTO watchedDTO) {
         WatchedMediaUser watchedMediaUser = new WatchedMediaUser();
 
-        watchedMediaUser.setMediaUserKey(new MediaUserKey(null, watchedDTO.getUserId(), watchedDTO.getMediaId()));
+        watchedMediaUser.setId(null);
+        watchedMediaUser.setMedia(mediaRepository.findById(watchedDTO.getMediaId()).orElse(null));
+        watchedMediaUser.setUser(userRepository.findById(watchedDTO.getUserId()).orElse(null));
         watchedMediaUser.setRating(watchedDTO.getRating());
         watchedMediaUser.setWatched(Timestamp.from(Instant.ofEpochSecond(watchedDTO.getWatched())));
 

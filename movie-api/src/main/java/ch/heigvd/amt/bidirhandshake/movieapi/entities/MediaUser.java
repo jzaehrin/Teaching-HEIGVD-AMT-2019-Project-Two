@@ -1,6 +1,5 @@
 package ch.heigvd.amt.bidirhandshake.movieapi.entities;
 
-import ch.heigvd.amt.bidirhandshake.movieapi.entities.keys.MediaUserKey;
 import lombok.*;
 import org.hibernate.annotations.DiscriminatorFormula;
 
@@ -16,8 +15,10 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorFormula("case when watched is null then 1 else 2 end")
 public class MediaUser {
-    @EmbeddedId
-    protected MediaUserKey mediaUserKey;
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    private Integer id;
 
     @ManyToOne
     @MapsId("userId")

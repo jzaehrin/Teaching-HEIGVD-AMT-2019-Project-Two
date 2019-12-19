@@ -26,11 +26,11 @@ public class Media {
     private String mainGenre;
     private Integer rating;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "media")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "media", cascade = {CascadeType.ALL} )
     @ToString.Exclude
     private List<WatchedMediaUser> watchedMediaUser;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "media")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "media", cascade = {CascadeType.ALL} )
     @ToString.Exclude
     private List<ToWatchMediaUser> toWatchMediaUser;
 }

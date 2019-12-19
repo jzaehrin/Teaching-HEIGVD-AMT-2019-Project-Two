@@ -2,24 +2,16 @@ package ch.heigvd.amt.bidirhandshake.movieapi.api.utils;
 
 import ch.heigvd.amt.bidirhandshake.movieapi.dto.ToWatchDTO;
 import ch.heigvd.amt.bidirhandshake.movieapi.entities.ToWatchMediaUser;
-import ch.heigvd.amt.bidirhandshake.movieapi.entities.keys.MediaUserKey;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.MediaRepository;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ToWatchDTOHelper {
 
-    @Autowired
-    private static UserRepository userRepository;
-
-    @Autowired
-    private static MediaRepository mediaRepository;
-
     public static ToWatchDTO fromEntity(ToWatchMediaUser toWatchMediaUser) {
-        return new ToWatchDTO().id(toWatchMediaUser.getMediaUserKey().getId())
+        return new ToWatchDTO().id(toWatchMediaUser.getId())
                                 .mediaId(toWatchMediaUser.getMedia().getId())
                                 .userId(toWatchMediaUser.getUser().getId());
     }
@@ -28,17 +20,17 @@ public class ToWatchDTOHelper {
         return toWatchMediaUser.stream().map(v -> fromEntity(v)).collect(Collectors.toList());
     }
 
-    public static ToWatchMediaUser toEntity(ToWatchDTO toWatchDTO) {
+    public static ToWatchMediaUser toEntity(ToWatchDTO toWatchDTO, MediaRepository mediaRepository, UserRepository userRepository) {
         ToWatchMediaUser toWatchMediaUser = new ToWatchMediaUser();
 
-        toWatchMediaUser.setMediaUserKey(new MediaUserKey());
-        toWatchMediaUser.setUser(userRepository.findById(toWatchDTO.getUserId()).orElse(null));
+        toWatchMediaUser.setId(null);
         toWatchMediaUser.setMedia(mediaRepository.findById(toWatchDTO.getMediaId()).orElse(null));
+        toWatchMediaUser.setUser(userRepository.findById(toWatchDTO.getUserId()).orElse(null));
 
         return toWatchMediaUser;
     }
 
-    public static List<ToWatchMediaUser> toEntity(List<ToWatchDTO> toWatchesDTO) {
-        return  toWatchesDTO.stream().map(toWatchDTO -> toEntity(toWatchDTO)).collect(Collectors.toList());
+    public static List<ToWatchMediaUser> toEntity(List<ToWatchDTO> toWatchesDTO, MediaRepository mediaRepository, UserRepository userRepository) {
+        return  toWatchesDTO.stream().map(toWatchDTO -> toEntity(toWatchDTO, mediaRepository, userRepository)).collect(Collectors.toList());
     }
 }
