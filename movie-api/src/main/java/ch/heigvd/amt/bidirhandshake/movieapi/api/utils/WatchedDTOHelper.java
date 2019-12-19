@@ -25,17 +25,19 @@ public class WatchedDTOHelper {
         return watchedsMediaUser.stream().map(v -> fromEntity(v)).collect(Collectors.toList());
     }
 
-    public static WatchedMediaUser toEntity(WatchedDTO watchedDTO) {
+    public static WatchedMediaUser toEntity(WatchedDTO watchedDTO, MediaRepository mediaRepository, UserRepository userRepository) {
         WatchedMediaUser watchedMediaUser = new WatchedMediaUser();
 
         watchedMediaUser.setId(new MediaUserKey(watchedDTO.getUserId(), watchedDTO.getMediaId()));
+        watchedMediaUser.setMedia(mediaRepository.findById(watchedDTO.getMediaId()).orElse(null));
+        watchedMediaUser.setUser(userRepository.findById(watchedDTO.getUserId()).orElse(null));
         watchedMediaUser.setRating(watchedDTO.getRating());
         watchedMediaUser.setWatched(Timestamp.from(Instant.ofEpochSecond(watchedDTO.getWatched())));
 
         return watchedMediaUser;
     }
 
-    public static List<WatchedMediaUser> toEntity(List<WatchedDTO> watchedsDTO) {
-        return  watchedsDTO.stream().map(watchedDTO -> toEntity(watchedDTO)).collect(Collectors.toList());
+    public static List<WatchedMediaUser> toEntity(List<WatchedDTO> watchedsDTO, MediaRepository mediaRepository, UserRepository userRepository) {
+        return  watchedsDTO.stream().map(watchedDTO -> toEntity(watchedDTO, mediaRepository, userRepository)).collect(Collectors.toList());
     }
 }

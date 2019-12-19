@@ -20,15 +20,17 @@ public class ToWatchDTOHelper {
         return toWatchMediaUser.stream().map(v -> fromEntity(v)).collect(Collectors.toList());
     }
 
-    public static ToWatchMediaUser toEntity(ToWatchDTO toWatchDTO) {
+    public static ToWatchMediaUser toEntity(ToWatchDTO toWatchDTO, MediaRepository mediaRepository, UserRepository userRepository) {
         ToWatchMediaUser toWatchMediaUser = new ToWatchMediaUser();
 
         toWatchMediaUser.setId(new MediaUserKey(toWatchDTO.getUserId(), toWatchDTO.getMediaId()));
+        toWatchMediaUser.setMedia(mediaRepository.findById(toWatchDTO.getMediaId()).orElse(null));
+        toWatchMediaUser.setUser(userRepository.findById(toWatchDTO.getUserId()).orElse(null));
 
         return toWatchMediaUser;
     }
 
-    public static List<ToWatchMediaUser> toEntity(List<ToWatchDTO> toWatchesDTO) {
-        return  toWatchesDTO.stream().map(toWatchDTO -> toEntity(toWatchDTO)).collect(Collectors.toList());
+    public static List<ToWatchMediaUser> toEntity(List<ToWatchDTO> toWatchesDTO, MediaRepository mediaRepository, UserRepository userRepository) {
+        return  toWatchesDTO.stream().map(toWatchDTO -> toEntity(toWatchDTO, mediaRepository, userRepository)).collect(Collectors.toList());
     }
 }

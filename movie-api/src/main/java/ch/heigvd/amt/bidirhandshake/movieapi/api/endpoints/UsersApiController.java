@@ -49,7 +49,7 @@ public class UsersApiController implements UsersApi {
         existOrCreate(userId);
 
         toWatchDTO.setUserId(userId);
-        ToWatchMediaUser toWatchMediaUser = ToWatchDTOHelper.toEntity(toWatchDTO);
+        ToWatchMediaUser toWatchMediaUser = ToWatchDTOHelper.toEntity(toWatchDTO, mediaRepository, userRepository);
 
         toWatchMediaUser = toWatchMediaUserRepository.save(toWatchMediaUser);
 
@@ -62,7 +62,7 @@ public class UsersApiController implements UsersApi {
         existOrCreate(userId);
 
         watchedDTO.setUserId(userId);
-        WatchedMediaUser watchedMediaUser = WatchedDTOHelper.toEntity(watchedDTO);
+        WatchedMediaUser watchedMediaUser = WatchedDTOHelper.toEntity(watchedDTO, mediaRepository, userRepository);
 
         watchedMediaUser = watchedMediaUserRepository.save(watchedMediaUser);
 

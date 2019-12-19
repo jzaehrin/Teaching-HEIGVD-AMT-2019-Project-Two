@@ -21,12 +21,12 @@ public class MediaUser {
 
     @ManyToOne
     @MapsId("userId")
-    @JoinColumn(name = "user_id")
+    //@JoinColumn(name = "user_id")
     protected User user;
 
     @ManyToOne
     @MapsId("mediaId")
-    @JoinColumn(name = "media_id")
+    //@JoinColumn(name = "media_id")
     protected Media media;
 }
 
