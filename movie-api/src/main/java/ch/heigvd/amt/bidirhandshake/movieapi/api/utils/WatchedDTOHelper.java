@@ -5,7 +5,6 @@ import ch.heigvd.amt.bidirhandshake.movieapi.entities.WatchedMediaUser;
 import ch.heigvd.amt.bidirhandshake.movieapi.entities.keys.MediaUserKey;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.MediaRepository;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.time.Instant;

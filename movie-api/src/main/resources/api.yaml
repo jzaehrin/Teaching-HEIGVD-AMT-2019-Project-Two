@@ -204,7 +204,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /users/{user_id}/towatch/{towatch_id}:
+  /users/{user_id}/towatch/{media_id}:
+    put:
+      tags:
+        - towatch
+        - user
+      summary: update a towatch to a watched
+      operationId: updateToWatched
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: User identifiant number
+        - in: path
+          name: media_id
+          schema:
+            type: integer
+          required: true
+          description: Media identifiant number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WatchedDTO'
+      responses:
+        200:
+          description: Successfull query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchedDTO'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - towatch
@@ -225,25 +274,11 @@ paths:
           required: true
           description: User identifiant number
         - in: path
-          name: towatch_id
+          name: media_id
           schema:
             type: integer
           required: true
-          description: ToWatch identifiant number
-        - in: query
-          name: pageNumber
-          schema:
-            type: integer
-            minimum: 1
-            default: 1
-          description: page number
-        - in: query
-          name: pageSize
-          schema:
-            type: integer
-            minimum: 1
-            default: 20
-          description: page size
+          description: Media identifiant number
       responses:
         200:
           description: Successfull query
@@ -355,7 +390,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /users/{user_id}/watched/{watched_id}:
+  /users/{user_id}/watched/{media_id}:
     delete:
       tags:
         - towatch
@@ -376,11 +411,11 @@ paths:
           required: true
           description: User identifiant number
         - in: path
-          name: watched_id
+          name: media_id
           schema:
             type: integer
           required: true
-          description: Watched identifiant number
+          description: Media identifiant number
       responses:
         200:
           description: Successfull query

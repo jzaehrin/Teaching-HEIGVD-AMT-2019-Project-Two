@@ -8,6 +8,7 @@ import ch.heigvd.amt.bidirhandshake.movieapi.dto.WatchedDTO;
 import ch.heigvd.amt.bidirhandshake.movieapi.entities.ToWatchMediaUser;
 import ch.heigvd.amt.bidirhandshake.movieapi.entities.User;
 import ch.heigvd.amt.bidirhandshake.movieapi.entities.WatchedMediaUser;
+import ch.heigvd.amt.bidirhandshake.movieapi.entities.keys.MediaUserKey;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.MediaRepository;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.ToWatchMediaUserRepository;
 import ch.heigvd.amt.bidirhandshake.movieapi.repositories.UserRepository;
@@ -70,12 +71,27 @@ public class UsersApiController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteToWatch(String authorization, Integer userId, Integer towatchId, @Min(1) @Valid Integer pageNumber, @Min(1) @Valid Integer pageSize) throws Exception {
+    public ResponseEntity<WatchedDTO> updateToWatched(String authorization, Integer userId, Integer mediaId, @Valid WatchedDTO watchedDTO) throws Exception {
+        if (!context.getAttribute("userId").equals(userId)) throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
+        existOrCreate(userId);
+
+        if (toWatchMediaUserRepository.existsById(new MediaUserKey(userId, mediaId))) throw new ApiError(HttpStatus.NOT_FOUND, "ToWatch not found, you must create to update it to a watched media");
+
+        watchedDTO.setUserId(userId);
+        WatchedMediaUser watchedMediaUser = WatchedDTOHelper.toEntity(watchedDTO, mediaRepository, userRepository);
+
+        watchedMediaUser = watchedMediaUserRepository.save(watchedMediaUser);
+
+        return ResponseEntity.ok().body(WatchedDTOHelper.fromEntity(watchedMediaUser));
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteToWatch(String authorization, Integer userId, Integer mediaId) throws Exception {
         if (!context.getAttribute("userId").equals(userId)) throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
         existOrCreate(userId);
 
         try {
-            toWatchMediaUserRepository.deleteById(towatchId);
+            toWatchMediaUserRepository.deleteById(new MediaUserKey(userId, mediaId));
         } catch (InvalidDataAccessApiUsageException e) {
             throw new ApiError(HttpStatus.NOT_FOUND, "towatch entity not found");
         }
@@ -84,12 +100,12 @@ public class UsersApiController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteWatched(String authorization, Integer userId, Integer watchedId) throws Exception {
+    public ResponseEntity<Void> deleteWatched(String authorization, Integer userId, Integer mediaId) throws Exception {
         if (!context.getAttribute("userId").equals(userId)) throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
         existOrCreate(userId);
 
         try {
-            watchedMediaUserRepository.deleteById(watchedId);
+            watchedMediaUserRepository.deleteById(new MediaUserKey(userId, mediaId));
         } catch (InvalidDataAccessApiUsageException e) {
             throw new ApiError(HttpStatus.NOT_FOUND, "watched entity not found");
         }
