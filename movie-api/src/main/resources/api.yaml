@@ -15,8 +15,6 @@ externalDocs:
   description: Markdown report
   url: https://github.com/jzaehrin/Teaching-HEIGVD-AMT-2019-Project-Two
 tags:
-  - name: users
-    description: Operations about users
   - name: user
     description: Operations about user's data
   - name: medias
