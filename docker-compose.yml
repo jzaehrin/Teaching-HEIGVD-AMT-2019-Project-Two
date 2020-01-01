@@ -1,0 +1,69 @@
+version: "2.4"
+
+services:
+  traefik:
+    image: traefik
+    container_name: "traefik"
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.mariadb.address=:3306"
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "3306:3306"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - "--traefik.http.routers.api.rule=Host(`api.localhost`)"
+      - "--traefik.http.routers.api.service=api@internal"
+  auth-api:
+    build: auth-api
+    container_name: "auth-api"
+    environment:
+      spring_profiles_active: docker
+    depends_on:
+      - db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.auth-api.rule=Host(`localhost`) && PathPrefix(`/api/auth`)"
+      - "traefik.http.middlewares.auth-api-stripprefix.stripprefix.prefixes=/api/auth"
+      - "traefik.http.routers.auth-api.middlewares=auth-api-stripprefix@docker"
+      - "traefik.http.services.auth-api.loadbalancer.server.port=8080"
+
+  movie-api:
+    build: movie-api
+    container_name: "movie-api"
+    environment:
+      spring_profiles_active: docker
+    depends_on:
+      - db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.movie-api.rule=Host(`localhost`) && PathPrefix(`/api/movie`)"
+      - "traefik.http.middlewares.movie-api-stripprefix.stripprefix.prefixes=/api/movie"
+      - "traefik.http.routers.movie-api.middlewares=movie-api-stripprefix@docker"
+      - "traefik.http.services.movie-api.loadbalancer.server.port=8080"
+
+  db:
+    container_name: "db"
+    image: "mariadb:latest"
+    environment:
+      - MYSQL_USER=mysql
+      - MYSQL_PASSWORD=mysql
+      - MYSQL_ROOT_PASSWORD=secret
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.mariadb.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.mariadb.entrypoints=mariadb"
+      - "traefik.tcp.routers.mariadb.service=mariadb"
+      - "traefik.tcp.services.mariadb.loadbalancer.server.port=3306"
+    volumes:
+      - ./databases/init/:/docker-entrypoint-initdb.d/ # init database
+      - ./databases/data/:/var/lib/mysql/ # data storage
+
+networks:
+  default:
+    driver: bridge
