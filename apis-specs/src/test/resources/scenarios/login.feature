@@ -6,6 +6,7 @@ Feature: Login
     When I POST it to the route "/login" as "application/json"
     Then I receive a 200 status code
     And I receive a response with a jwt in Authorization header
+    And I am logged in as "pete842"
 
   Scenario: connecting a legit user with a wrong password as json
     Given I have the user "pete842@mail.com"
@@ -28,7 +29,7 @@ Feature: Login
     And I receive a response without Authorization header
 
   Scenario: connecting a user without an email as json
-    Given I have the a user without email
+    Given I have a user without email
     And I have the password "totem"
     When I POST it to the route "/login" as "application/json"
     Then I receive a 400 status code

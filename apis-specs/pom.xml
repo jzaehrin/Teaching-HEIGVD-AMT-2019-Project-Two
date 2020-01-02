@@ -147,6 +147,11 @@
       <scope>test</scope>
       <type>jar</type>
     </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-picocontainer</artifactId>
+      <version>4.7.2</version>
+    </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -168,6 +173,12 @@
       <groupId>com.konghq</groupId>
       <artifactId>unirest-java</artifactId>
       <version>3.3.00</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.6</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
