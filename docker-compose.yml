@@ -13,15 +13,14 @@ services:
     ports:
       - "80:80"
       - "8080:8080"
-      - "3306:3306"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - "--traefik.http.routers.api.rule=Host(`api.localhost`)"
       - "--traefik.http.routers.api.service=api@internal"
+
   auth-api:
     build: auth-api
-    container_name: "auth-api"
     environment:
       spring_profiles_active: docker
     depends_on:
@@ -35,7 +34,6 @@ services:
 
   movie-api:
     build: movie-api
-    container_name: "movie-api"
     environment:
       spring_profiles_active: docker
     depends_on:

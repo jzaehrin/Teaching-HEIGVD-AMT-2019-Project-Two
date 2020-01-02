@@ -76,6 +76,6 @@ delimiter ;
 
 call insertMediaUser;
 
-create sequence `hibernate_sequence`
+create sequence `hibernate_sequence`;
 
-SELECT * from media_user WHERE user_id = 2 AND watched is null;
+SELECT "Init finished";

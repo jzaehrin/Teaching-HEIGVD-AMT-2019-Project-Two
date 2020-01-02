@@ -9,6 +9,23 @@
 
 ## How to use
 
+Lors de la première utilisation, il est nécessaire de correctement initialiser la base de données :
+```bash
+$ docker-compose up --build db
+```
+
+Une fois le message `Init finished` visible, vous pouvez interrompre la base de données avec `control + C`.
+
+Il est maintenant possible de lancer l'ensemble de l'infrastructure :
+```bash
+$ docker-compose up --build
+```
+
+`Traefik` ecoute sur le port `80` pour l'infrastructure et `8080` pour l'interface de gestion.
+
+Les apis sont préfixés par `/api/auth` pour accéder aux routes de l'api d'authentification et `/api/movie` pour accéder aux routes de l'api movies.
+Par exemple `/api/auth/login` ou `/api/movie/movies`.
+
 ## Documentations
 
 - [Contexte](docs/domain.md)
