@@ -1,5 +1,8 @@
 package ch.heigvd.amt.bidirhandshake.apisspecs.steps;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -14,9 +17,34 @@ public class APISteps {
     public APISteps(World world) {
         this.world = world;
 
+        // workaround to respect snake case with Unirest
+        ObjectMapper jacksonMapper = new com.fasterxml.jackson.databind.ObjectMapper()
+                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+
         Unirest.config()
                 .setDefaultHeader("Content-Type", "application/json")
-                .setDefaultHeader("Accept", "application/json");
+                .setDefaultHeader("Accept", "application/json")
+                .setObjectMapper(new kong.unirest.ObjectMapper() {
+                    @Override
+                    public <T> T readValue(String s, Class<T> aClass) {
+                        try {
+                            return jacksonMapper.readValue(s, aClass);
+                        } catch (JsonProcessingException e) {
+                            e.printStackTrace();
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                    @Override
+                    public String writeValue(Object o) {
+                        try {
+                            return jacksonMapper.writeValueAsString(o);
+                        } catch (JsonProcessingException e) {
+                            e.printStackTrace();
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
     }
 
     @When("I POST it to the route {string} with token")
@@ -53,6 +81,15 @@ public class APISteps {
                 .asJson();
     }
 
+    @When("I PUT it to the route {string} with token")
+    public void iPUTItToTheRouteWithToken(String route) {
+        this.world.route = route;
+
+        this.world.response = Unirest.put(this.world.BASE_URL + this.world.route)
+                .body(this.world.body).headerReplace("Authorization", this.world.token)
+                .asJson();
+    }
+
     @Then("^I receive a (\\d+) status code$")
     public void iReceiveAStatusCode(int statusCode) {
         assertEquals(statusCode, this.world.response.getStatus());
@@ -67,5 +104,20 @@ public class APISteps {
     @And("^I receive a response without (\\w+) header$")
     public void iReceiveAResponseWithoutAuthorizationHeader(String headerKey) {
         assertFalse(this.world.response.getHeaders().containsKey(headerKey));
+    }
+
+    @When("I GET the route {string} with token")
+    public void iGETTheRouteWithToken(String route) {
+        world.response = Unirest.get(world.BASE_URL + route).headerReplace("Authorization", this.world.token).asJson();
+    }
+
+    @When("I GET the route {string}")
+    public void iGETTheRoute(String route) {
+        world.response = Unirest.get(world.BASE_URL + route).asJson();
+    }
+
+    @When("I DELETE the route {string} with token")
+    public void iDELETETheRouteWithToken(String route) {
+        world.response = Unirest.delete(world.BASE_URL + route).headerReplace("Authorization", this.world.token).asJson();
     }
 }

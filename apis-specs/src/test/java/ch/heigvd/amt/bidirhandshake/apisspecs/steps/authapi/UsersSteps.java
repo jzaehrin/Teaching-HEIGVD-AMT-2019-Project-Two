@@ -1,20 +1,17 @@
-package ch.heigvd.amt.bidirhandshake.apisspecs.steps;
+package ch.heigvd.amt.bidirhandshake.apisspecs.steps.authapi;
 
+import ch.heigvd.amt.bidirhandshake.apisspecs.steps.World;
 import ch.heigvd.amt.bidirhandshake.authapi.dto.PasswordChanger;
 import io.cucumber.java.en.And;
 
 public class UsersSteps {
-    private final APISteps apiSteps;
-    private LoginSteps loginSteps;
     private World world;
 
     PasswordChanger passwordChanger;
     PasswordChanger passwordChangerRollback;
 
-    public UsersSteps(World world, LoginSteps loginSteps, APISteps apiSteps) {
-        this.loginSteps = loginSteps;
+    public UsersSteps(World world) {
         this.world = world;
-        this.apiSteps = apiSteps;
     }
 
     @And("^I have a well-formed password payload$")

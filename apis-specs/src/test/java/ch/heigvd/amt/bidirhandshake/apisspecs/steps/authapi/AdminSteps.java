@@ -1,5 +1,6 @@
-package ch.heigvd.amt.bidirhandshake.apisspecs.steps;
+package ch.heigvd.amt.bidirhandshake.apisspecs.steps.authapi;
 
+import ch.heigvd.amt.bidirhandshake.apisspecs.steps.World;
 import ch.heigvd.amt.bidirhandshake.authapi.dto.UserDTO;
 import io.cucumber.java.en.When;
 import org.apache.commons.lang.RandomStringUtils;
@@ -13,8 +14,7 @@ public class AdminSteps {
 
     @When("I have a well-formed user payload")
     public void iHaveAWellFormedUserPayload() {
-        UserDTO user = new UserDTO();
-        user.username(RandomStringUtils.randomAlphabetic(10));
+        UserDTO user = new UserDTO().username(RandomStringUtils.randomAlphabetic(10));
         user.setEmail(user.getUsername() + "@domain.com");
         user.setPassword("password");
         user.setConfirmPassword("password");

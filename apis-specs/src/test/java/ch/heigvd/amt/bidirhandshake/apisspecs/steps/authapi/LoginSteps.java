@@ -1,18 +1,18 @@
-package ch.heigvd.amt.bidirhandshake.apisspecs.steps;
+package ch.heigvd.amt.bidirhandshake.apisspecs.steps.authapi;
 
+import ch.heigvd.amt.bidirhandshake.apisspecs.steps.APISteps;
+import ch.heigvd.amt.bidirhandshake.apisspecs.steps.World;
 import ch.heigvd.amt.bidirhandshake.authapi.dto.UserCredential;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 
 public class LoginSteps {
     private World world;
-    private APISteps apiSteps;
 
     UserCredential userCredential;
 
-    public LoginSteps(World world, APISteps apiSteps) {
+    public LoginSteps(World world) {
         this.world = world;
-        this.apiSteps = apiSteps;
     }
 
     @Given("I have the user {string}")
@@ -32,8 +32,8 @@ public class LoginSteps {
     public void iAmLoggedInAs(String email, String password) {
         iHaveTheUser(email);
         iHaveThePassword(password);
-        this.apiSteps.iPOSTItToTheRoute("/login");
-        this.apiSteps.iReceiveAStatusCode(200);
+        this.world.apiSteps.iPOSTItToTheRoute("/auth/login");
+        this.world.apiSteps.iReceiveAStatusCode(200);
         iAmLoggedInAs(email);
     }
 
