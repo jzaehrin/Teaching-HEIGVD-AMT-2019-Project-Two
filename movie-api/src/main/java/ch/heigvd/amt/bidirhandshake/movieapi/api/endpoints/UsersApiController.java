@@ -119,7 +119,11 @@ public class UsersApiController implements UsersApi {
 
         Page<ToWatchMediaUser> toWatchMediaUser = toWatchMediaUserRepository.findAllByUser(PageRequest.of(pageNumber, pageSize), user);
 
-        return ResponseEntity.ok().body(ToWatchDTOHelper.fromEntity(toWatchMediaUser.toList()));
+        double count = toWatchMediaUserRepository.countByUser(user);
+
+        return ResponseEntity.ok()
+                .header("PageInfo", "NbPages=" + (int)Math.ceil(count / (double)pageSize) + ";Total=" + count)
+                .body(ToWatchDTOHelper.fromEntity(toWatchMediaUser.toList()));
     }
 
     @Override
@@ -128,7 +132,11 @@ public class UsersApiController implements UsersApi {
 
         Page<WatchedMediaUser> watchedsMediaUsers = watchedMediaUserRepository.findAllByUser(PageRequest.of(pageNumber, pageSize), user);
 
-        return ResponseEntity.ok().body(WatchedDTOHelper.fromEntity(watchedsMediaUsers.toList()));
+        double count = watchedMediaUserRepository.countByUser(user);
+
+        return ResponseEntity.ok()
+                .header("PageInfo", "NbPages=" + (int)Math.ceil(count / (double)pageSize) + ";Total=" + count)
+                .body(WatchedDTOHelper.fromEntity(watchedsMediaUsers.toList()));
     }
 
     private void existOrCreate(Integer id) {

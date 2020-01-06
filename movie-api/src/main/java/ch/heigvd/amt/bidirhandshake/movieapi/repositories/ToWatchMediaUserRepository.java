@@ -12,4 +12,5 @@ import java.util.List;
 
 public interface ToWatchMediaUserRepository extends CrudRepository<ToWatchMediaUser, MediaUserKey> {
     Page<ToWatchMediaUser> findAllByUser(Pageable pageable, User user);
+    long countByUser(User user);
 }

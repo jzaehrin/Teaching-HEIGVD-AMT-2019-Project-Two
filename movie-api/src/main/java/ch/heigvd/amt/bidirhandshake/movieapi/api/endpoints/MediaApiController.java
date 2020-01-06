@@ -31,6 +31,10 @@ public class MediaApiController implements MediaApi {
     public ResponseEntity<List<MediaDTO>> getMedias(String authorization, @Min(1) @Valid Integer pageNumber, @Min(1) @Valid Integer pageSize) throws Exception {
         Page<Media> medias = mediaRepository.findAll(PageRequest.of(pageNumber, pageSize));
 
-        return ResponseEntity.ok().body(MediaDTOHelper.fromEntity(medias.toList()));
+        long count = mediaRepository.count();
+
+        return ResponseEntity.ok()
+                .header("PageInfo", "NbPages=" + (int)Math.ceil(count / (double)pageSize) + ";Total=" + count)
+                .body(MediaDTOHelper.fromEntity(medias.toList()));
     }
 }

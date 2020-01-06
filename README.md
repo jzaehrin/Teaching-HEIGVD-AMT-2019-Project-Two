@@ -16,6 +16,11 @@ $ docker-compose up --build db
 
 Une fois le message `Init finished` visible, vous pouvez interrompre la base de données avec `control + C`.
 
+Il faut aussi compilé les projets en effectuant cette commande à la racine du repository :
+```bash
+$ mvn package
+```
+
 Il est maintenant possible de lancer l'ensemble de l'infrastructure :
 ```bash
 $ docker-compose up --build

@@ -36,3 +36,5 @@ values ('pete842',
         'capito27@mail.com');
 
 select * from `users`;
+
+create sequence `hibernate_sequence`;

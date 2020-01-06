@@ -5,6 +5,7 @@ import ch.heigvd.amt.bidirhandshake.movieapi.api.utils.JWTHelper;
 import ch.heigvd.amt.bidirhandshake.movieapi.dto.Error;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Order(1)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class AuthentificationFilter extends HttpFilter {
 
     @Override

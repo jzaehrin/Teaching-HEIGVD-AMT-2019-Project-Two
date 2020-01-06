@@ -40,7 +40,7 @@ values (1),
        (2),
        (3);
 
-load data local infile '/home/pete/workspace/AMT/Teaching-HEIGVD-AMT-2019-Project-Two/movie-api/db/init/out.csv' into table `medias` fields terminated by '\t' lines terminated by '\n' (`title`, @release, `duration`, `main_genre`, `rating`) set `release` = FROM_UNIXTIME(@release);
+load data local infile '/Users/jzaehrin/Sites/AMT/Teaching-HEIGVD-AMT-2019-Project-Two/movie-api/db/init/out.csv' into table `medias` fields terminated by '\t' lines terminated by '\n' (`title`, @release, `duration`, `main_genre`, `rating`) set `release` = FROM_UNIXTIME(@release);
 
 drop procedure if exists insertMediaUser;
 delimiter //
@@ -74,6 +74,6 @@ end;
 //
 delimiter ;
 
-call insertMediaUser;
+create sequence `hibernate_sequence`;
 
-drop sequence `hibernate_sequence`
+call insertMediaUser;

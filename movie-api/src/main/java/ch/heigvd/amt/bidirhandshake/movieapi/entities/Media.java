@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "medias")
 public class Media {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     private Timestamp release;

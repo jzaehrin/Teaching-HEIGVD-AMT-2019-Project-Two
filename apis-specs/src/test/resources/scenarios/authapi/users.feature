@@ -17,4 +17,4 @@ Feature: Users@auth-api
   Scenario: changing the password of a user without any token in request
     And I have a well-formed password payload
     When I POST it to the route "/auth/users/1/password"
-    Then I receive a 500 status code
+    Then I receive a 401 status code

@@ -9,4 +9,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface WatchedMediaUserRepository extends CrudRepository<WatchedMediaUser, MediaUserKey> {
     Page<WatchedMediaUser> findAllByUser(Pageable pageable, User user);
+    long countByUser(User user);
 }

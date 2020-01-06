@@ -1,26 +1,29 @@
 package ch.heigvd.amt.bidirhandshake.authapi.api.filters;
 
 import ch.heigvd.amt.bidirhandshake.authapi.api.exceptions.ApiError;
-import ch.heigvd.amt.bidirhandshake.authapi.api.utils.JWTHelper;
 import ch.heigvd.amt.bidirhandshake.authapi.entities.User;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Order(1)
-public class AuthorizationFilter implements Filter {
+public class AuthorizationFilter extends HttpFilter {
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
+    protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException { ;
 
-        User.Role role = User.Role.valueOf((String) req.getAttribute("role"));
+        User.Role role = User.Role.valueOf((String) request.getAttribute("role"));
 
-        if (!role.equals(User.Role.admin)) throw new ApiError(HttpStatus.UNAUTHORIZED, "You need to be admin !");
+        if (!role.equals(User.Role.admin)) {
+            FilterUtils.writeError(response, new ApiError(HttpStatus.UNAUTHORIZED, "You need to be admin !"));
+            return;
+        }
 
         chain.doFilter(request, response);
     }
