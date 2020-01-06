@@ -1,4 +1,4 @@
-Feature: watched@movie-api
+Feature: Watched@movie-api
 
   Scenario: querying a watched page as legit user
     Given I am logged in as "pete842@mail.com" with password "totem"
