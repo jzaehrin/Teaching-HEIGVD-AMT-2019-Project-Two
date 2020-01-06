@@ -1,12 +1,9 @@
 package ch.heigvd.amt.bidirhandshake.apisspecs.steps.movieapi;
 
 import ch.heigvd.amt.bidirhandshake.apisspecs.steps.World;
-import ch.heigvd.amt.bidirhandshake.apisspecs.steps.authapi.LoginSteps;
 import ch.heigvd.amt.bidirhandshake.movieapi.dto.MediaDTO;
-import ch.heigvd.amt.bidirhandshake.movieapi.dto.ToWatch;
 import ch.heigvd.amt.bidirhandshake.movieapi.dto.ToWatchDTO;
 import ch.heigvd.amt.bidirhandshake.movieapi.dto.WatchedDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.And;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;

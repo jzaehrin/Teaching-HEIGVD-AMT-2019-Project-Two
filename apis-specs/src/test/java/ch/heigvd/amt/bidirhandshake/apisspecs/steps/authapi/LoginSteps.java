@@ -1,6 +1,5 @@
 package ch.heigvd.amt.bidirhandshake.apisspecs.steps.authapi;
 
-import ch.heigvd.amt.bidirhandshake.apisspecs.steps.APISteps;
 import ch.heigvd.amt.bidirhandshake.apisspecs.steps.World;
 import ch.heigvd.amt.bidirhandshake.authapi.dto.UserCredential;
 import io.cucumber.java.en.And;
