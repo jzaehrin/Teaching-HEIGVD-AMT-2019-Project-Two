@@ -1,6 +1,6 @@
 [Retour](../README.md)
 
-# Structure et particularité
+Structure et particularité
 
 Nous avons suivi un structure conventionnel pour `Spring`.
 
