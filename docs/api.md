@@ -31,5 +31,16 @@ Ces routes se distinguent par le type de données voulant être traité qui sont
 Cette catégorie est suivie d'un `identifiant` de média quand on parle d'une donnée déjà existante pour faire des mises à jour ou de la suppression de ces entités.
 Sans cet identifiant on parle alors de la récupération de la liste des entités sous forme de page ainsi que la création de ces entités par un `POST`.
 
+## Documentation
+
+Il nous a été impossible de fournir la documentation par `swagger-ui` directement disponible sur l'api.
+Nous travaillant avec openapi 3 avec une définition version 3, ce point est problèmatique car apparement cela n'est pas encore supporté ce qui empêche d'avoir le fichier de définition générer.
+
+Il est toutefois possible de tester notre api en utilisant votre `swagger-editor` avec les fichiers `yaml` suivant :
+
+- [Auth api](./api/auth-api.yml)
+- [Movie api](./api/movie-api.yml)
+
+Ou par l'utilisation de Postman par exemple.
 
 [Retour](../README.md)

@@ -1,0 +1,500 @@
+openapi: 3.0.1
+info:
+  title: AMT Project Two - Movie API
+  description: Project Two of the course AMT 2019 to the HEIG-VD
+  termsOfService: https://github.com/jzaehrin/Teaching-HEIGVD-AMT-2019-Project-Two
+  contact:
+    email: jonathan.zaehringer@heig-vd.ch
+  license:
+    name: TBD
+  version: 1.0.0
+servers:
+  - url: http://locahost/
+    description : dev server
+externalDocs:
+  description: Markdown report
+  url: https://github.com/jzaehrin/Teaching-HEIGVD-AMT-2019-Project-Two
+tags:
+  - name: user
+    description: Operations about user's data
+  - name: medias
+    description: Operations about medias
+  - name: watched
+    description: Operations about watched
+  - name: towatch
+    description: Operations about toWatch
+paths:
+  /media:
+    get:
+      tags:
+        - medias
+      summary: Get all medias
+      operationId: getMedias
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
+        - in: query
+          name: pageNumber
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: page number
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            minimum: 1
+            default: 20
+          description: page size
+      responses:
+        200:
+          description: Successfull query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediasDTO'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - medias
+      summary: Add a new Media
+      operationId: addMedia
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MediaDTO'
+      responses:
+        200:
+          description: Successfull query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaDTO'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{user_id}/towatch:
+    get:
+      tags:
+        - towatch
+        - user
+      summary: Get all toWatch media form user
+      operationId: getToWatch
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: User identifiant number
+        - in: query
+          name: pageNumber
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: page number
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            minimum: 1
+            default: 20
+          description: page size
+      responses:
+        200:
+          description: Successfull query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToWatchsDTO'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - towatch
+        - user
+      summary: add new toWatch media for user
+      operationId: addToWatch
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: User identifiant number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToWatchDTO'
+      responses:
+        200:
+          description: Successfull query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToWatchDTO'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{user_id}/towatch/{media_id}:
+    put:
+      tags:
+        - towatch
+        - user
+      summary: update a towatch to a watched
+      operationId: updateToWatched
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: User identifiant number
+        - in: path
+          name: media_id
+          schema:
+            type: integer
+          required: true
+          description: Media identifiant number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WatchedDTO'
+      responses:
+        200:
+          description: Successfull query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchedDTO'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - towatch
+        - user
+      summary: add new toWatch media for user
+      operationId: deleteToWatch
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: User identifiant number
+        - in: path
+          name: media_id
+          schema:
+            type: integer
+          required: true
+          description: Media identifiant number
+      responses:
+        200:
+          description: Successfull query
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{user_id}/watched:
+    get:
+      tags:
+        - watched
+        - user
+      summary: Get all watched media form user
+      operationId: getWatched
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: User identifiant number
+        - in: query
+          name: pageNumber
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: page number
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            minimum: 1
+            default: 20
+          description: page size
+      responses:
+        200:
+          description: Successfull query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchedsDTO'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - watched
+        - user
+      summary: add new Watched media for user
+      operationId: addWatched
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: User identifiant number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WatchedDTO'
+      responses:
+        200:
+          description: Successfull query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchedDTO'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{user_id}/watched/{media_id}:
+    delete:
+      tags:
+        - towatch
+        - user
+      summary: add new Watched media for user
+      operationId: deleteWatched
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: User identifiant number
+        - in: path
+          name: media_id
+          schema:
+            type: integer
+          required: true
+          description: Media identifiant number
+      responses:
+        200:
+          description: Successfull query
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    MediaDTO:
+      type: object
+      required: ["title", "release", "duration", "main_genre", "rating"]
+      properties:
+        id:
+          description: "In Database id"
+          type: integer
+        title:
+          type: string
+        release:
+          type: integer
+        duration:
+          type: integer
+        main_genre:
+          type: string
+        rating:
+          type: integer
+          format: tinyint
+          minimum: 0
+          maximum: 100
+    MediasDTO:
+      type: array
+      items:
+        $ref: '#/components/schemas/MediaDTO'
+    WatchedDTO:
+      type: object
+      required: ["media_id", "watched", "rating"]
+      properties:
+        media_id:
+          type: integer
+        user_id:
+          type: integer
+        watched:
+          description: "UTC timestamp"
+          type: integer
+        rating:
+          type: integer
+          format: tinyint
+          minimum: 0
+          maximum: 100
+    WatchedsDTO:
+      type: array
+      items:
+        $ref: '#/components/schemas/WatchedDTO'
+    ToWatchDTO:
+      type: object
+      required: ["media_id"]
+      properties:
+        media_id:
+          type: integer
+        user_id:
+          type: integer
+    ToWatchsDTO:
+      type: array
+      items:
+        $ref: '#/components/schemas/ToWatchDTO'
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+  securitySchemes:
+    BearerJWT:
+      description: "JWT from authentification API"
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

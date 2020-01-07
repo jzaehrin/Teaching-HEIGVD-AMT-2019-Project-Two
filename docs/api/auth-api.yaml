@@ -1,0 +1,179 @@
+openapi: 3.0.1
+info:
+  title: AMT Project Two - Auth API
+  description: Project Two of the course AMT 2019 to the HEIG-VD
+  termsOfService: https://github.com/jzaehrin/Teaching-HEIGVD-AMT-2019-Project-Two
+  contact:
+    email: jonathan.zaehringer@heig-vd.ch
+  license:
+    name: TBD
+  version: 1.0.0
+externalDocs:
+  description: Markdown report
+  url: https://github.com/jzaehrin/Teaching-HEIGVD-AMT-2019-Project-Two
+tags:
+  - name: users
+    description: Operations about users
+  - name: admin
+    description: Operations for admin users
+servers:
+  - url: http://localhost:3000/v1
+    description: dev server
+paths:
+  /login:
+    post:
+      tags:
+        - users
+      summary: Login to an existing User
+      operationId: login
+      requestBody:
+        description: User credential object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredential'
+        required: true
+      responses:
+        200:
+          description: Successfull login
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Invalid email or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{user_id}/password:
+    post:
+      tags:
+        - users
+      summary: Change user password
+      description: Permit to change this own password
+      operationId: changePassword
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: User identifiant number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordChanger'
+      responses:
+        200:
+          description: successful operation
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /admin/users:
+    post:
+      tags:
+        - admin
+        - users
+      summary: Create a new Users
+      description: Create a new Users if the user is an admin
+      operationId: createUser
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: JWT from auth_api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        400:
+          description: Malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: Email already used
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    UserCredential:
+      type: object
+      required: ["email", "password"]
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    PasswordChanger:
+      type: object
+      required: ["currentPassword", "password", "confirmPassword"]
+      properties:
+        currentPassword:
+          type: string
+        password:
+          type: string
+        confirmPassword:
+          type: string
+    UserDTO:
+      type: object
+      required: ["username", "email", "role", "password", "confirmPassword"]
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+        password:
+          type: string
+        confirmPassword:
+          type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+  securitySchemes:
+    BearerJWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

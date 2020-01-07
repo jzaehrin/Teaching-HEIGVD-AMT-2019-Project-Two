@@ -36,4 +36,15 @@ La clé primaire de cette table est aussi spéciale, car elle contient l'identif
 
 Un changement majeur a été la suppression d'un `identifiant` propre à l'entité `MediaUser` pour permettre plus de facilité avec `hibernate`.
 
+## Polymorphisme
+
+Nous avons une relation polymorphique sur une même table qui contient alors deux types d'objets (ToWatch et Watched) pour les `MediaUser`.
+Pour ce faire, nous avons une relation d'héritage dans les `entites` avec une relation de condition sur la présence de `watched` pour différencier les entitées.
+
+//TODO
+
+### Problèmes
+
+//TODO
+
 [Retour](../README.md)

@@ -14,10 +14,13 @@ import java.util.stream.Collectors;
 public class WatchedDTOHelper {
 
     public static WatchedDTO fromEntity(WatchedMediaUser watchedMediaUser) {
+        System.out.println(watchedMediaUser.getRating());
+        System.out.println(watchedMediaUser.getWatched());
+
         return new WatchedDTO().mediaId(watchedMediaUser.getId().getMediaId())
                                 .userId(watchedMediaUser.getId().getUserId())
-                                .rating(watchedMediaUser.getRating())
-                                .watched(watchedMediaUser.getWatched().toInstant().getNano() / 1000000);
+                                .rating(watchedMediaUser.getRating());
+                                //.watched(watchedMediaUser.getWatched().toInstant().getNano() / 1000000);
     }
 
     public static List<WatchedDTO> fromEntity(List<WatchedMediaUser> watchedsMediaUser) {
