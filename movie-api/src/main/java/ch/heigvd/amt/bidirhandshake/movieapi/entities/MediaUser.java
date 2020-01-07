@@ -6,16 +6,19 @@ import org.hibernate.annotations.DiscriminatorFormula;
 
 import javax.persistence.*;
 
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
-@MappedSuperclass
 @Table(name = "media_user")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorFormula("case when watched is null then 1 else 2 end")
-public class MediaUser {
+@DiscriminatorFormula("case when rating is null then 'T' else 'W' end")
+@DiscriminatorValue("null")
+@NamedNativeQuery(name = "media_user.deleteEntry",
+        query = "DELETE FROM movieDBidir.media_user WHERE user_id = :user_id AND media_id = :media_id")
+public abstract class MediaUser {
     @EmbeddedId
     protected MediaUserKey id;
 

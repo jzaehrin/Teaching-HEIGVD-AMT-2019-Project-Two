@@ -17,9 +17,9 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @Embeddable
 public class MediaUserKey implements Serializable {
-    @Column(name = "user_id")
+    @Column(name = "media_user.user_id")
     private Integer userId;
 
-    @Column(name = "media_id")
+    @Column(name = "media_user.media_id")
     private Integer mediaId;
 }

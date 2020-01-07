@@ -22,13 +22,13 @@ Feature: Watched@movie-api
     When I POST it to the route "/movie/users/1/watched" with token
     Then I receive a 200 status code
 
+  Scenario: deleting a watched relation as legit user
+    Given I am logged in as "pete842@mail.com" with password "totem"
+    When I DELETE the route "/movie/users/1/watched/1" with token
+    Then I receive a 200 status code
+
   Scenario: adding a watched relation as legit user for another user
     Given I am logged in as "pete842@mail.com" with password "totem"
     And I have a well-formed watched payload between userId 1 and mediaId 1
     When I POST it to the route "/movie/users/2/watched" with token
     Then I receive a 401 status code
-
-  Scenario: deleting a watched relation as legit user
-    Given I am logged in as "pete842@mail.com" with password "totem"
-    When I DELETE the route "/movie/users/1/watched/1" with token
-    Then I receive a 200 status code

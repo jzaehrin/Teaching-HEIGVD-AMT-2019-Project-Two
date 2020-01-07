@@ -1,24 +1,27 @@
 package ch.heigvd.amt.bidirhandshake.movieapi.entities;
 
 import lombok.*;
+import org.hibernate.annotations.Where;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "media_user")
-@DiscriminatorValue("1")
+@DiscriminatorValue("T")
+@Where(clause = "watched is null")
+@NamedNativeQueries({
+        @NamedNativeQuery(name = "media_user.changeType",
+                query = "UPDATE movieDBidir.media_user SET watched = :watched, rating = :rating WHERE user_id = :user_id AND media_id = :media_id")
+})
 public class ToWatchMediaUser extends MediaUser {
     @ToString.Exclude
     protected Integer rating;
+
     @ToString.Exclude
     protected Timestamp watched;
 }

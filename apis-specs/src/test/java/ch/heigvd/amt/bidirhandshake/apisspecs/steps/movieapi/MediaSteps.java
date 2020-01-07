@@ -5,6 +5,8 @@ import ch.heigvd.amt.bidirhandshake.movieapi.dto.MediaDTO;
 import ch.heigvd.amt.bidirhandshake.movieapi.dto.ToWatchDTO;
 import ch.heigvd.amt.bidirhandshake.movieapi.dto.WatchedDTO;
 import io.cucumber.java.en.And;
+import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONObject;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
@@ -39,7 +41,7 @@ public class MediaSteps {
     }
 
     @And("I have a well-formed towatch payload between userId {int} and mediaId {int}")
-    public void iHaveAWellFormedTowatchPayload(int userId, int mediaId) {
+    public void iHaveAWellFormedTowatchPayloadBetween(int userId, int mediaId) {
         ToWatchDTO toWatchDTO = new ToWatchDTO();
         toWatchDTO.setUserId(userId);
         toWatchDTO.setMediaId(mediaId);
@@ -50,8 +52,8 @@ public class MediaSteps {
     @And("I have a well-formed towatch relation between userId {int} and mediaId {int}")
     public void iHaveAWellFormedToWatchRelation(int userId, int mediaId) {
         this.world.loginSteps.iAmLoggedInAs("pete842@mail.com", "totem");
-        iHaveAWellFormedTowatchPayload(userId, mediaId);
-        this.world.apiSteps.iPOSTItToTheRouteWithToken(String.format("/movie/users/%d/towatch", userId, mediaId));
+        iHaveAWellFormedTowatchPayloadBetween(userId, mediaId);
+        this.world.apiSteps.iPOSTItToTheRouteWithToken(String.format("/movie/users/%d/towatch", userId));
         this.world.apiSteps.iReceiveAStatusCode(200);
     }
 

@@ -20,10 +20,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Controller
@@ -44,9 +49,13 @@ public class UsersApiController implements UsersApi {
     @Autowired
     private HttpServletRequest context;
 
+    @PersistenceContext
+    EntityManager em;
+
     @Override
     public ResponseEntity<ToWatchDTO> addToWatch(String authorization, Integer userId, @Valid ToWatchDTO toWatchDTO) throws Exception {
-        if (!context.getAttribute("userId").equals(userId)) throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
+        if (!context.getAttribute("userId").equals(userId))
+            throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
         existOrCreate(userId);
 
         toWatchDTO.setUserId(userId);
@@ -59,7 +68,8 @@ public class UsersApiController implements UsersApi {
 
     @Override
     public ResponseEntity<WatchedDTO> addWatched(String authorization, Integer userId, @Valid WatchedDTO watchedDTO) throws Exception {
-        if (!context.getAttribute("userId").equals(userId)) throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
+        if (!context.getAttribute("userId").equals(userId))
+            throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
         existOrCreate(userId);
 
         watchedDTO.setUserId(userId);
@@ -71,41 +81,57 @@ public class UsersApiController implements UsersApi {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<WatchedDTO> updateToWatched(String authorization, Integer userId, Integer mediaId, @Valid WatchedDTO watchedDTO) throws Exception {
-        if (!context.getAttribute("userId").equals(userId)) throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
+        if (!context.getAttribute("userId").equals(userId))
+            throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
         existOrCreate(userId);
 
-        if (toWatchMediaUserRepository.existsById(new MediaUserKey(userId, mediaId))) throw new ApiError(HttpStatus.NOT_FOUND, "ToWatch not found, you must create to update it to a watched media");
+        if (!toWatchMediaUserRepository.existsById(new MediaUserKey(userId, mediaId)))
+            throw new ApiError(HttpStatus.NOT_FOUND, "ToWatch not found, you must create to update it to a watched media");
 
-        watchedDTO.setUserId(userId);
+        Query q = em.createNamedQuery("media_user.changeType")
+                .setParameter("watched", new Timestamp(watchedDTO.getWatched()))
+                .setParameter("rating", watchedDTO.getRating())
+                .setParameter("user_id", userId)
+                .setParameter("media_id", mediaId);
+
+        em.joinTransaction();
+        q.executeUpdate();
+
+        /*watchedDTO.setUserId(userId);
         WatchedMediaUser watchedMediaUser = WatchedDTOHelper.toEntity(watchedDTO, mediaRepository, userRepository);
 
-        watchedMediaUser = watchedMediaUserRepository.save(watchedMediaUser);
+        watchedMediaUser = watchedMediaUserRepository.save(watchedMediaUser);*/
 
-        return ResponseEntity.ok().body(WatchedDTOHelper.fromEntity(watchedMediaUser));
+        return ResponseEntity.ok().body(watchedDTO);
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Void> deleteToWatch(String authorization, Integer userId, Integer mediaId) throws Exception {
-        if (!context.getAttribute("userId").equals(userId)) throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
-        existOrCreate(userId);
-
-        try {
-            toWatchMediaUserRepository.deleteById(new MediaUserKey(userId, mediaId));
-        } catch (InvalidDataAccessApiUsageException e) {
-            throw new ApiError(HttpStatus.NOT_FOUND, "towatch entity not found");
-        }
-
-        return ResponseEntity.ok().build();
+        return deleteMediaUser(authorization, userId, mediaId);
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Void> deleteWatched(String authorization, Integer userId, Integer mediaId) throws Exception {
-        if (!context.getAttribute("userId").equals(userId)) throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
+        return deleteMediaUser(authorization, userId, mediaId);
+    }
+
+    @Transactional
+    public ResponseEntity<Void> deleteMediaUser(String authorization, Integer userId, Integer mediaId) throws Exception {
+        if (!context.getAttribute("userId").equals(userId))
+            throw new ApiError(HttpStatus.UNAUTHORIZED, "Can modifiy media_user of a user");
         existOrCreate(userId);
 
         try {
-            watchedMediaUserRepository.deleteById(new MediaUserKey(userId, mediaId));
+            Query q = em.createNamedQuery("media_user.deleteEntry")
+                    .setParameter("user_id", userId)
+                    .setParameter("media_id", mediaId);
+
+            em.joinTransaction();
+            q.executeUpdate();
         } catch (InvalidDataAccessApiUsageException e) {
             throw new ApiError(HttpStatus.NOT_FOUND, "watched entity not found");
         }
@@ -122,7 +148,7 @@ public class UsersApiController implements UsersApi {
         double count = toWatchMediaUserRepository.countByUser(user);
 
         return ResponseEntity.ok()
-                .header("PageInfo", "NbPages=" + (int)Math.ceil(count / (double)pageSize) + ";Total=" + count)
+                .header("PageInfo", "NbPages=" + (int) Math.ceil(count / (double) pageSize) + ";Total=" + count)
                 .body(ToWatchDTOHelper.fromEntity(toWatchMediaUser.toList()));
     }
 
@@ -135,7 +161,7 @@ public class UsersApiController implements UsersApi {
         double count = watchedMediaUserRepository.countByUser(user);
 
         return ResponseEntity.ok()
-                .header("PageInfo", "NbPages=" + (int)Math.ceil(count / (double)pageSize) + ";Total=" + count)
+                .header("PageInfo", "NbPages=" + (int) Math.ceil(count / (double) pageSize) + ";Total=" + count)
                 .body(WatchedDTOHelper.fromEntity(watchedsMediaUsers.toList()));
     }
 

@@ -57,7 +57,7 @@ begin
                 (`user_id`,
                  `media_id`)
                 values (1,
-                        floor(rand() * (1000000 - 1 + 1)) + 1);
+                        floor(rand() * (1000000 - 2 + 1)) + 2);
 
                 insert into `media_user`
                 (`user_id`,
@@ -65,7 +65,7 @@ begin
                  `rating`,
                  `watched`)
                 values (1,
-                        floor(rand() * (1000000 - 1 + 1)) + 1,
+                        floor(rand() * (1000000 - 2 + 1)) + 2,
                         floor(rand() * (100 - 1 + 1)) + 1,
                         now() - interval floor(rand() * 365) day);
             end while;
@@ -79,3 +79,6 @@ call insertMediaUser;
 create sequence `hibernate_sequence`;
 
 SELECT "Init finished";
+
+
+select * from movieDBidir.media_user order by media_id limit 20;
