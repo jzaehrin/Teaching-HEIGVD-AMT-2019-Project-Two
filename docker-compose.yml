@@ -61,6 +61,8 @@ services:
     volumes:
       - ./databases/init/:/docker-entrypoint-initdb.d/ # init database
       - ./databases/data/:/var/lib/mysql/ # data storage
+    ports:
+      - "3306:3306"
 
 networks:
   default:
