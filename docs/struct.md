@@ -21,6 +21,13 @@ Cependant, nous n’avons pas réussi à le mettre en place, c'est pour cette ra
 
 ## Gestions des versions d'API
 
-//TODO
+La gestion des versions est un point essentiel dans la vie d'une api.
+Il est récurrent de devoir faire de gros changement qui nécessite des modifications sur la façon de communiquer ce nécessite le redéveloppement des clients.
+Pour éviter une rupture de service pour une mise à jour, il est nécessaire de garder une retrocompatibilité (temporaire ou non) par la duplication des endpoints.
+
+Nous n'avons pas implémenté ce versionning mais il est relativement simple.
+Il est nécessaire de séparer les différentes versions avec une chemin par défaut de `/api/v1` par exemple et de fournir les différentes implémentations sur ces chemins.
+La solution est de faire des packages contenants les différentes versions avec un environnement complête et séparer pour éviter les interdépendences et isolés leur fonctionnement.
+
 
 [Retour](../README.md)
